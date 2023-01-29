@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
             obscureText: true,
             decoration: InputDecoration(
                 prefixIcon: Icon(Icons.lock_open_outlined),
-                labelText: "Email",
+                labelText: "Password",
                 //   suffixIcon: Icon(Icons.sh),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
