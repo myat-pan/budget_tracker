@@ -20,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Column(
         children: [
           TextFormField(
-            controller: _emailController,
+            controller: _nameController,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
                 prefixIcon: Icon(Icons.person_outline),
@@ -30,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 )),
           ),
           TextFormField(
-            controller: _passwordController,
+            controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             obscureText: true,
             decoration: InputDecoration(
@@ -54,7 +54,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 )),
           ),
           TextFormField(
-            controller: _passwordController,
+            controller: _retypePasswordController,
             keyboardType: TextInputType.emailAddress,
             obscureText: true,
             decoration: InputDecoration(
