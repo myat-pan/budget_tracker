@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   _textfieldSection() {
     return Container(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           TextFormField(
             controller: _nameController,
@@ -28,6 +30,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 )),
+          ),
+          SizedBox(
+            height: 12,
           ),
           TextFormField(
             controller: _emailController,
@@ -41,6 +46,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(10),
                 )),
           ),
+          SizedBox(
+            height: 12,
+          ),
           TextFormField(
             controller: _passwordController,
             keyboardType: TextInputType.emailAddress,
@@ -52,6 +60,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 )),
+          ),
+          SizedBox(
+            height: 12,
           ),
           TextFormField(
             controller: _retypePasswordController,
@@ -65,16 +76,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(10),
                 )),
           ),
-          RichText(
-              text: TextSpan(children: [
-            TextSpan(text: "Don't have an account? Register"),
-            TextSpan(
-              recognizer: TapGestureRecognizer()..onTap = () {},
-              text: "here",
-              style: TextStyle(
-                  color: Colors.blue, decoration: TextDecoration.underline),
-            )
-          ]))
         ],
       ),
     );
@@ -84,26 +85,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Center(
-        child: SingleChildScrollView(
+            child: Center(
+      child: SingleChildScrollView(
+        child: Container(
+            padding: EdgeInsets.all(12),
             child: Column(
-          children: [
-            Text("Welcome To Budget"),
-            _textfieldSection(),
-            ElevatedButton(onPressed: () {}, child: Text("Sign Up")),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(text: "Already have an account? Sign in"),
-              TextSpan(
-                recognizer: TapGestureRecognizer()..onTap = () {},
-                text: "here",
-                style: TextStyle(
-                    color: Colors.blue, decoration: TextDecoration.underline),
-              )
-            ]))
-          ],
-        )),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      "Welcome To Budget",
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 28, letterSpacing: 4),
+                    )),
+                SizedBox(
+                  height: 60,
+                ),
+                _textfieldSection(),
+                SizedBox(
+                  height: 40,
+                ),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width / 1,
+                    child: ElevatedButton(
+                        onPressed: () {}, child: Text("Sign Up"))),
+                SizedBox(
+                  height: 24,
+                ),
+                RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                      text: "Already have an account? Sign in ",
+                      style: TextStyle(color: Colors.black)),
+                  TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => LoginScreen(),
+                          ),
+                        );
+                      },
+                    text: "here",
+                    style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline),
+                  )
+                ]))
+              ],
+            )),
       ),
-    ));
+    )));
   }
 }
