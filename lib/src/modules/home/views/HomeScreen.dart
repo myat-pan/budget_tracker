@@ -1,3 +1,5 @@
+import 'package:budget_tracker/src/modules/categories/views/CategoriesScreen.dart';
+import 'package:budget_tracker/src/modules/profile/views/Profile.dart';
 import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
 import 'package:flutter/material.dart';
@@ -8,25 +10,38 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
   final List<Widget> _pages = [];
+
+  final List<String> _appBarNames = [
+    "Dashboard",
+    "Categories",
+    "Statistics",
+    "Profile"
+  ];
   @override
   void initState() {
     _pages.add(LoginScreen());
-    _pages.add(LoginScreen());
+    _pages.add(CategoriesScreen());
     _pages.add(RegisterScreen());
-    _pages.add(RegisterScreen());
+    _pages.add(ProfileScreen());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('BottomNavigationBar')),
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Text(
+            _appBarNames[_currentIndex],
+            style: TextStyle(color: Colors.black, letterSpacing: 2),
+          )),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
-        notchMargin: 4,
+        notchMargin: 0,
         clipBehavior: Clip.antiAlias,
         child: Container(
           height: kBottomNavigationBarHeight,
@@ -68,11 +83,13 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(0),
         child: FloatingActionButton(
-          backgroundColor: Colors.blue,
+          elevation: 4,
+          backgroundColor: Color.fromARGB(255, 202, 227, 239),
           child: Icon(
             Icons.add_outlined,
+            color: Colors.blue[900],
           ),
           onPressed: () => setState(() {
             _currentIndex = 1;

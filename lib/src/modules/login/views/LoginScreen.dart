@@ -2,6 +2,7 @@ import 'package:budget_tracker/src/modules/home/views/HomeScreen.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -16,31 +17,51 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       child: Column(
         children: [
-          TextFormField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.mail_outline_outlined),
-                labelText: "Email",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )),
-          ),
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8)),
+              child: TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                    fillColor: Colors.grey[300],
+                    prefixIcon: Icon(
+                      Icons.mail_outline_outlined,
+                      color: Colors.black.withOpacity(0.7),
+                    ),
+                    labelText: "Email",
+                    border: InputBorder.none
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(10),
+
+                    // )
+                    ),
+              )),
           SizedBox(
             height: 12,
           ),
-          TextFormField(
-            controller: _passwordController,
-            keyboardType: TextInputType.emailAddress,
-            obscureText: true,
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock_open_outlined),
-                labelText: "Password",
-                //   suffixIcon: Icon(Icons.sh),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )),
-          ),
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8)),
+              child: TextFormField(
+                controller: _passwordController,
+                keyboardType: TextInputType.emailAddress,
+                obscureText: true,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.lock_open_outlined,
+                      color: Colors.black.withOpacity(0.7),
+                    ),
+                    labelText: "Password",
+                    border: InputBorder.none
+                    //   suffixIcon: Icon(Icons.sh),
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(10),
+                    // )
+                    ),
+              )),
           SizedBox(
             height: 24,
           ),
@@ -48,12 +69,13 @@ class _LoginScreenState extends State<LoginScreen> {
               width: MediaQuery.of(context).size.width / 1,
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => HomeScreen(),
-                      ),
-                    );
+                    Get.offAll(HomeScreen(), transition: Transition.downToUp);
+                    // Navigator.pushReplacement(
+                    //   context,
+                    //   MaterialPageRoute<void>(
+                    //     builder: (BuildContext context) => HomeScreen(),
+                    //   ),
+                    // );
                   },
                   child: Text("Sign In"))),
           SizedBox(
@@ -67,12 +89,13 @@ class _LoginScreenState extends State<LoginScreen> {
             TextSpan(
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => RegisterScreen(),
-                    ),
-                  );
+                  Get.offAll(RegisterScreen(), transition: Transition.downToUp);
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute<void>(
+                  //     builder: (BuildContext context) => RegisterScreen(),
+                  //   ),
+                  // );
                 },
               text: "here",
               style: TextStyle(

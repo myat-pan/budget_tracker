@@ -3,6 +3,7 @@
 import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -121,12 +122,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) => LoginScreen(),
-                          ),
-                        );
+                        Get.offAll(LoginScreen(),
+                            transition: Transition.downToUp);
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute<void>(
+                        //     builder: (BuildContext context) => LoginScreen(),
+                        //   ),
+                        // );
                       },
                     text: "here",
                     style: TextStyle(
