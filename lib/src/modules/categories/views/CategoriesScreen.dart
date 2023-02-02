@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:budget_tracker/src/res/colors.dart' as color;
 
 class CategoriesScreen extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           children: [
             Expanded(
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.green),
+                    style: ElevatedButton.styleFrom(primary: color.inComeColor),
                     onPressed: () {},
                     child: Wrap(
                       direction: Axis.horizontal,
@@ -32,7 +33,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
             Expanded(
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.red),
+                    style:
+                        ElevatedButton.styleFrom(primary: color.expenseColor),
                     onPressed: () {},
                     child: Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,

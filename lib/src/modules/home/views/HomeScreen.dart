@@ -1,9 +1,10 @@
 import 'package:budget_tracker/src/modules/categories/views/CategoriesScreen.dart';
 import 'package:budget_tracker/src/modules/dashboard/views/DashboardScreen.dart';
 import 'package:budget_tracker/src/modules/profile/views/Profile.dart';
-import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:budget_tracker/src/res/colors.dart' as color;
+import 'package:budget_tracker/src/res/styles.dart' as style;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -37,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           title: Text(
             _appBarNames[_currentIndex],
-            style: TextStyle(color: Colors.black, letterSpacing: 2),
+            style: style.appBarStyle,
           )),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomAppBar(
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         notchMargin: 4,
         clipBehavior: Clip.antiAlias,
         child: Container(
-          height: kBottomNavigationBarHeight,
+          height: 60,
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -58,9 +59,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: BottomNavigationBar(
                 currentIndex: _currentIndex,
-                backgroundColor: Colors.blue[100],
-                selectedItemColor: Colors.green,
-                unselectedItemColor: Colors.black26,
+                backgroundColor: Colors.grey[200],
+                selectedItemColor: color.inComeColor,
+                selectedFontSize: 13,
+                selectedIconTheme: IconThemeData(size: 26),
+                unselectedIconTheme: IconThemeData(size: 16),
+                unselectedItemColor: Colors.black54,
+                unselectedFontSize: 10,
+                showUnselectedLabels: true,
                 type: BottomNavigationBarType.fixed,
                 onTap: (index) {
                   setState(() {

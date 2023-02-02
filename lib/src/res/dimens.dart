@@ -30,3 +30,8 @@ const PAD_ALL_5 = EdgeInsets.all(5);
 
 const SCREEN_PAD = EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0);
 const SCREEN_PAD_INSIDE = EdgeInsets.symmetric(horizontal: 20.0);
+
+const double textFieldHeight = 46.0;
+const double buttonHeight = 50.0;
+const double borderRadius = 14;
+const double textFieldBorderRadius = 8;

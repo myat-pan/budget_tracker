@@ -1,8 +1,10 @@
 import 'package:budget_tracker/src/modules/home/views/HomeScreen.dart';
+import 'package:budget_tracker/src/modules/login/components/text_form_field_widget.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:budget_tracker/src/res/dimens.dart' as dimens;
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -17,65 +19,32 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       child: Column(
         children: [
-          Container(
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8)),
-              child: TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    fillColor: Colors.grey[300],
-                    prefixIcon: Icon(
-                      Icons.mail_outline_outlined,
-                      color: Colors.black.withOpacity(0.7),
-                    ),
-                    labelText: "Email",
-                    border: InputBorder.none
-                    // border: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(10),
-
-                    // )
-                    ),
-              )),
+          TextFormFieldWidget(
+            controller: _emailController,
+            icon: Icons.mail_outline_outlined,
+            labelText: "Email",
+          ),
           SizedBox(
             height: 12,
           ),
-          Container(
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8)),
-              child: TextFormField(
-                controller: _passwordController,
-                keyboardType: TextInputType.emailAddress,
-                obscureText: true,
-                decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.lock_open_outlined,
-                      color: Colors.black.withOpacity(0.7),
-                    ),
-                    labelText: "Password",
-                    border: InputBorder.none
-                    //   suffixIcon: Icon(Icons.sh),
-                    // border: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(10),
-                    // )
-                    ),
-              )),
+          TextFormFieldWidget(
+            controller: _passwordController,
+            icon: Icons.lock_open_outlined,
+            labelText: "Password",
+          ),
           SizedBox(
-            height: 24,
+            height: 60,
           ),
           SizedBox(
               width: MediaQuery.of(context).size.width / 1,
+              height: dimens.buttonHeight,
               child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(dimens.borderRadius))),
                   onPressed: () {
                     Get.offAll(HomeScreen(), transition: Transition.downToUp);
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute<void>(
-                    //     builder: (BuildContext context) => HomeScreen(),
-                    //   ),
-                    // );
                   },
                   child: Text("Sign In"))),
           SizedBox(
@@ -92,12 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ..onTap = () {
                       Get.offAll(RegisterScreen(),
                           transition: Transition.downToUp);
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute<void>(
-                      //     builder: (BuildContext context) => RegisterScreen(),
-                      //   ),
-                      // );
                     },
                   text: "here",
                   style: TextStyle(

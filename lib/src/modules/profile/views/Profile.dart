@@ -1,5 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:budget_tracker/src/res/colors.dart' as color;
+import 'package:budget_tracker/src/res/format.dart' as format;
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -7,7 +11,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  List<String> _months = [
+  final List<String> _months = [
     "Jan",
     "Feb",
     "Mar",
@@ -26,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
+      padding: EdgeInsets.all(20),
       child: Column(
         children: [
           Expanded(
@@ -41,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Text(
                     "+5000",
                     style: TextStyle(
-                        color: Colors.green,
+                        color: color.inComeColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 16),
                   )
@@ -55,24 +59,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: ScrollConfiguration(
                 behavior: ScrollBehavior(),
                 child: DataTable2(
+                    dataRowHeight: 32,
+                    headingRowColor: MaterialStateColor.resolveWith(
+                      (states) {
+                        return color.dataHeadingColor;
+                      },
+                    ),
+                    dataRowColor: MaterialStateColor.resolveWith(
+                      (states) {
+                        return color.dataRowColor;
+                      },
+                    ),
                     border: TableBorder.all(width: 1, color: Colors.black38),
                     showBottomBorder: true,
                     columnSpacing: 14,
                     horizontalMargin: 14,
-                    minWidth: 100,
+                    minWidth: 40,
                     columns: [
                       DataColumn2(
                         label: Text('Month'),
+                        size: ColumnSize.S,
+                      ),
+                      DataColumn2(
+                        label: Text('Income'),
                         size: ColumnSize.L,
                       ),
-                      DataColumn(
-                        label: Text('Income'),
-                      ),
-                      DataColumn(
+                      DataColumn2(
                         label: Text('Expense'),
+                        size: ColumnSize.L,
                       ),
-                      DataColumn(
+                      DataColumn2(
                         label: Text('Balance'),
+                        size: ColumnSize.L,
                       ),
                     ],
                     rows: List<DataRow>.generate(
@@ -82,15 +100,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 _months[i],
                                 style: TextStyle(color: Colors.blue[800]),
                               )),
-                              DataCell(Text(
+                              DataCell(Center(
+                                  child: Text(
                                 '0',
-                                style: TextStyle(color: Colors.green),
-                              )),
-                              DataCell(Text(
+                                style: TextStyle(color: color.inComeColor),
+                              ))),
+                              DataCell(Center(
+                                  child: Text(
                                 '0',
-                                style: TextStyle(color: Colors.red),
-                              )),
-                              DataCell(Text('0')),
+                                style: TextStyle(color: color.expenseColor),
+                              ))),
+                              DataCell(Center(child: Text('0'))),
                             ]))),
               ))
         ],
