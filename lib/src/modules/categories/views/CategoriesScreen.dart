@@ -17,6 +17,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     style: ElevatedButton.styleFrom(primary: Colors.green),
                     onPressed: () {},
                     child: Wrap(
+                      direction: Axis.horizontal,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Icon(
@@ -65,13 +66,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     children: [
                       ListTile(
                         dense: true,
-                        leading: Icon(Icons.currency_bitcoin),
+                        leading: Icon(Icons.monetization_on_outlined),
                         title: Text("Part-time Job"),
                       ),
                       Divider(),
                       ListTile(
                         dense: true,
-                        leading: Icon(Icons.currency_bitcoin),
+                        leading: Icon(Icons.monetization_on_outlined),
                         title: Text("Part-time Job"),
                       )
                     ],
@@ -90,13 +91,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     children: [
                       ListTile(
                         dense: true,
-                        leading: Icon(Icons.currency_bitcoin),
+                        leading: Icon(Icons.monetization_on_outlined),
                         title: Text("Part-time Job"),
                       ),
                       Divider(),
                       ListTile(
                         dense: true,
-                        leading: Icon(Icons.currency_bitcoin),
+                        leading: Icon(Icons.monetization_on_outlined),
                         title: Text("Part-time Job"),
                       )
                     ],

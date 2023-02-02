@@ -1,4 +1,5 @@
 import 'package:budget_tracker/src/modules/categories/views/CategoriesScreen.dart';
+import 'package:budget_tracker/src/modules/dashboard/views/DashboardScreen.dart';
 import 'package:budget_tracker/src/modules/profile/views/Profile.dart';
 import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
@@ -21,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   @override
   void initState() {
-    _pages.add(LoginScreen());
+    _pages.add(DashboardScreen());
     _pages.add(CategoriesScreen());
     _pages.add(RegisterScreen());
     _pages.add(ProfileScreen());
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
-        notchMargin: 0,
+        notchMargin: 4,
         clipBehavior: Clip.antiAlias,
         child: Container(
           height: kBottomNavigationBarHeight,
@@ -50,14 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white,
               border: Border(
                 top: BorderSide(
-                  color: Colors.grey,
+                  color: Colors.white,
                   width: 0.5,
                 ),
               ),
             ),
             child: BottomNavigationBar(
                 currentIndex: _currentIndex,
-                backgroundColor: Colors.grey[100],
+                backgroundColor: Colors.blue[100],
                 selectedItemColor: Colors.green,
                 unselectedItemColor: Colors.black26,
                 type: BottomNavigationBarType.fixed,
@@ -86,10 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(0),
         child: FloatingActionButton(
           elevation: 4,
-          backgroundColor: Color.fromARGB(255, 202, 227, 239),
+          backgroundColor: Colors.blueGrey,
           child: Icon(
             Icons.add_outlined,
-            color: Colors.blue[900],
+            color: Colors.white,
           ),
           onPressed: () => setState(() {
             _currentIndex = 1;

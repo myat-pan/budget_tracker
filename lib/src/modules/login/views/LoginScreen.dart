@@ -82,26 +82,28 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 24,
           ),
           RichText(
+              textScaleFactor: 1.1,
               text: TextSpan(children: [
-            TextSpan(
-                text: "Don't have an account? Register ",
-                style: TextStyle(color: Colors.black)),
-            TextSpan(
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  Get.offAll(RegisterScreen(), transition: Transition.downToUp);
-                  // Navigator.pushReplacement(
-                  //   context,
-                  //   MaterialPageRoute<void>(
-                  //     builder: (BuildContext context) => RegisterScreen(),
-                  //   ),
-                  // );
-                },
-              text: "here",
-              style: TextStyle(
-                  color: Colors.blue, decoration: TextDecoration.underline),
-            )
-          ]))
+                TextSpan(
+                    text: "Don't have an account? Register ",
+                    style: TextStyle(color: Colors.black)),
+                TextSpan(
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Get.offAll(RegisterScreen(),
+                          transition: Transition.downToUp);
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute<void>(
+                      //     builder: (BuildContext context) => RegisterScreen(),
+                      //   ),
+                      // );
+                    },
+                  text: "here",
+                  style: TextStyle(
+                      color: Colors.blue, decoration: TextDecoration.underline),
+                )
+              ]))
         ],
       ),
     );

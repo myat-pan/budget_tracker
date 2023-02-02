@@ -19,64 +19,101 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   _textfieldSection() {
     return Container(
+      margin: EdgeInsets.only(left: 8, right: 8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          TextFormField(
-            controller: _nameController,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.person_outline),
-                labelText: "Name",
-                border: OutlineInputBorder(
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8)),
+              child: TextFormField(
+                controller: _nameController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.person_outline,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  labelText: "Name",
+                  border: InputBorder.none,
+                  /*   border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                )),
-          ),
+                ) */
+                ),
+              )),
           SizedBox(
             height: 12,
           ),
-          TextFormField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            obscureText: true,
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.mail_outline),
-                labelText: "Email",
-                //   suffixIcon: Icon(Icons.sh),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )),
-          ),
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8)),
+              child: TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                obscureText: true,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.mail_outline,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  labelText: "Email",
+                  //   suffixIcon: Icon(Icons.sh),
+                  border: InputBorder.none,
+                  /*    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ) */
+                ),
+              )),
           SizedBox(
             height: 12,
           ),
-          TextFormField(
-            controller: _passwordController,
-            keyboardType: TextInputType.emailAddress,
-            obscureText: true,
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock_open_outlined),
-                labelText: "Password",
-                //   suffixIcon: Icon(Icons.sh),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )),
-          ),
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8)),
+              child: TextFormField(
+                controller: _passwordController,
+                keyboardType: TextInputType.emailAddress,
+                obscureText: true,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.lock_open_outlined,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  labelText: "Password",
+                  //   suffixIcon: Icon(Icons.sh),
+                  border: InputBorder.none,
+                  /*  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ) */
+                ),
+              )),
           SizedBox(
             height: 12,
           ),
-          TextFormField(
-            controller: _retypePasswordController,
-            keyboardType: TextInputType.emailAddress,
-            obscureText: true,
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock_open_outlined),
-                labelText: "Confirm Password",
-                //   suffixIcon: Icon(Icons.sh),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )),
-          ),
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8)),
+              child: TextFormField(
+                controller: _retypePasswordController,
+                keyboardType: TextInputType.emailAddress,
+                obscureText: true,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.lock_open_outlined,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  labelText: "Confirm Password",
+                  //   suffixIcon: Icon(Icons.sh),
+                  border: InputBorder.none,
+                  /*   border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ) */
+                ),
+              )),
         ],
       ),
     );
@@ -115,28 +152,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 24,
                 ),
                 RichText(
+                    textScaleFactor: 1.1,
                     text: TextSpan(children: [
-                  TextSpan(
-                      text: "Already have an account? Sign in ",
-                      style: TextStyle(color: Colors.black)),
-                  TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        Get.offAll(LoginScreen(),
-                            transition: Transition.downToUp);
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute<void>(
-                        //     builder: (BuildContext context) => LoginScreen(),
-                        //   ),
-                        // );
-                      },
-                    text: "here",
-                    style: TextStyle(
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline),
-                  )
-                ]))
+                      TextSpan(
+                          text: "Already have an account? Sign in ",
+                          style: TextStyle(color: Colors.black)),
+                      TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Get.offAll(LoginScreen(),
+                                transition: Transition.downToUp);
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute<void>(
+                            //     builder: (BuildContext context) => LoginScreen(),
+                            //   ),
+                            // );
+                          },
+                        text: "here",
+                        style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline),
+                      )
+                    ]))
               ],
             )),
       ),
