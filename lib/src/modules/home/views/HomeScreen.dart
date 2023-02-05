@@ -2,6 +2,7 @@ import 'package:budget_tracker/src/modules/categories/views/CategoriesScreen.dar
 import 'package:budget_tracker/src/modules/dashboard/views/DashboardScreen.dart';
 import 'package:budget_tracker/src/modules/profile/views/Profile.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
+import 'package:budget_tracker/src/modules/statistics/views/StatisticsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/styles.dart' as style;
@@ -25,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     _pages.add(DashboardScreen());
     _pages.add(CategoriesScreen());
-    _pages.add(RegisterScreen());
+    _pages.add(StatisticsScreen());
     _pages.add(ProfileScreen());
     super.initState();
   }

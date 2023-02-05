@@ -3,7 +3,7 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
-import 'package:budget_tracker/src/res/format.dart' as format;
+import 'package:budget_tracker/src/res/dimens.dart' as dimens;
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -26,13 +26,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
     "Dec",
     "Total",
   ];
+
+  _userInfoSection() {
+    return Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(dimens.textFieldBorderRadius)),
+      elevation: 1,
+      child: ListTile(
+        leading: Container(
+          decoration: BoxDecoration(
+              color: color.incomeCardColor,
+              borderRadius: BorderRadius.circular(dimens.borderRadius)),
+          width: 50,
+          height: 50,
+          child: Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
+        ),
+        title: Text("Myat Pan"),
+        subtitle: Text("myatpan.213@gmail.com"),
+        trailing: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.red,
+            )),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.only(left: 20, right: 20),
       child: Column(
         children: [
+          _userInfoSection(),
+          SizedBox(
+            height: 8,
+          ),
           Expanded(
               flex: 0,
               child: Row(
@@ -98,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         (i) => DataRow(cells: [
                               DataCell(Text(
                                 _months[i],
-                                style: TextStyle(color: Colors.blue[800]),
+                                style: TextStyle(color: color.messageColor),
                               )),
                               DataCell(Center(
                                   child: Text(

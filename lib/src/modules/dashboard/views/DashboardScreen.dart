@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/format.dart' as format;
 import 'package:budget_tracker/src/res/colors.dart' as color;
@@ -78,12 +80,71 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  _dailyBudgetWidget() {
+    return Container(
+      child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: 2,
+          itemBuilder: (context, index) {
+            return ListTile(
+              visualDensity: VisualDensity(horizontal: -4, vertical: -3),
+              leading: Icon(Icons.food_bank_outlined),
+              title: Text("food "),
+              trailing: Text(
+                "-5000",
+                style: TextStyle(color: color.expenseColor),
+              ),
+            );
+          }),
+    );
+  }
+
+  _dailyBudgetSection() {
+    return Container(
+      child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: 4,
+          itemBuilder: (context, index) {
+            return ListView(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                children: [
+                  Wrap(children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 6, bottom: 6),
+                      alignment: Alignment.center,
+                      color: Colors.grey[200],
+                      child: Text(
+                        "January 21",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 6),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "10% of your monthly Income was spent.",
+                        style: TextStyle(
+                          color: color.messageColor,
+                        ),
+                      ),
+                    ),
+                    _dailyBudgetWidget()
+                  ]),
+                ]);
+          }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(12),
         child: ListView(
+          physics: BouncingScrollPhysics(),
           children: [
             Container(
               padding: EdgeInsets.all(18),
@@ -122,7 +183,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
             ),
-            _incomeAndexpanseSection()
+            _incomeAndexpanseSection(),
+            SizedBox(
+              height: 16,
+            ),
+            _dailyBudgetSection(),
           ],
         ),
       ),

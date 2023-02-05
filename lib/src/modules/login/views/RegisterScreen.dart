@@ -19,10 +19,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _retypePasswordController =
       TextEditingController();
+  // Default Radio Button Selected Item When App Starts.
+  String radioButtonItem = 'ONE';
+
+  // Group Value for Radio Button.
+  int id = 1;
 
   _textfieldSection() {
     return Container(
-      margin: EdgeInsets.only(left: 8, right: 8),
+      // margin: EdgeInsets.only(left: 8, right: 8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -51,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             height: 12,
           ),
           TextFormFieldWidget(
-            controller: _passwordController,
+            controller: _retypePasswordController,
             icon: Icons.lock_open_outlined,
             labelText: "Password",
           ),
@@ -63,6 +68,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  _radioButtonSection() {
+    return Row(
+      children: [
+        SizedBox(
+          width: 8,
+        ),
+        Text(
+          "Gender:",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Radio(
+            value: 1,
+            groupValue: id,
+            onChanged: (val) {
+              setState(() {
+                radioButtonItem = "Male";
+                id = 1;
+              });
+            }),
+        Text("Male"),
+        Radio(
+            value: 2,
+            groupValue: id,
+            onChanged: (val) {
+              setState(() {
+                radioButtonItem = "Female";
+                id = 2;
+              });
+            }),
+        Text("Female"),
+        Radio(
+            value: 3,
+            groupValue: id,
+            onChanged: (val) {
+              setState(() {
+                radioButtonItem = "Others";
+                id = 3;
+              });
+            }),
+        Text("Others")
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +119,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Center(
       child: SingleChildScrollView(
         child: Container(
-            padding: EdgeInsets.all(12),
+            // padding: EdgeInsets.all(12),
+            margin: EdgeInsets.only(left: 18, right: 18),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -85,6 +135,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 60,
                 ),
                 _textfieldSection(),
+                SizedBox(
+                  height: 18,
+                ),
+                _radioButtonSection(),
                 SizedBox(
                   height: 40,
                 ),
