@@ -24,7 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           borderRadius: BorderRadius.circular(dimens.borderRadius)),
       color: cardColor,
       child: ListTile(
-        visualDensity: VisualDensity(vertical: 4),
+        visualDensity: VisualDensity(vertical: 4, horizontal: -4),
         leading: Container(
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(100)),
@@ -40,11 +40,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         subtitle: Wrap(
           children: [
-            Icon(
+            /* Icon(
               Icons.monetization_on_outlined,
               size: 20,
               color: Colors.white,
-            ),
+            ), */
             Text(
               format.numberFormat.format(amount).toString(),
               style: TextStyle(color: Colors.white, fontSize: 18),
@@ -91,6 +91,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               visualDensity: VisualDensity(horizontal: -4, vertical: -3),
               leading: Icon(Icons.food_bank_outlined),
               title: Text("food "),
+              subtitle: Text(
+                "data",
+                style: TextStyle(color: color.subtitleColor),
+              ),
               trailing: Text(
                 "-5000",
                 style: TextStyle(color: color.expenseColor),
@@ -115,7 +119,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Container(
                       padding: EdgeInsets.only(top: 6, bottom: 6),
                       alignment: Alignment.center,
-                      color: Colors.grey[200],
+                      color: Colors.grey[300],
                       child: Text(
                         "January 21",
                         style: TextStyle(fontWeight: FontWeight.bold),

@@ -15,7 +15,7 @@ class TextFormFieldWidget extends StatelessWidget {
     return Container(
         height: dimens.textFieldHeight,
         decoration: BoxDecoration(
-            color: Colors.grey[300],
+            color: Colors.grey[200],
             borderRadius: BorderRadius.circular(dimens.textFieldBorderRadius)),
         child: TextFormField(
           controller: controller,

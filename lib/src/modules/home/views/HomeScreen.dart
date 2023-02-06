@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "Statistics",
     "Profile"
   ];
+
   @override
   void initState() {
     _pages.add(DashboardScreen());
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
-        notchMargin: 4,
+        notchMargin: 6,
         clipBehavior: Clip.antiAlias,
         child: Container(
           height: 60,
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white,
               border: Border(
                 top: BorderSide(
-                  color: Colors.white,
+                  color: Colors.black12.withOpacity(0.1),
                   width: 0.5,
                 ),
               ),
@@ -62,8 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 currentIndex: _currentIndex,
                 backgroundColor: Colors.grey[200],
                 selectedItemColor: color.inComeColor,
-                selectedFontSize: 13,
-                selectedIconTheme: IconThemeData(size: 26),
+                selectedFontSize: 12,
+                selectedIconTheme: IconThemeData(size: 24),
                 unselectedIconTheme: IconThemeData(size: 16),
                 unselectedItemColor: Colors.black54,
                 unselectedFontSize: 10,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 
 class MyLineChart extends StatelessWidget {
-  const MyLineChart({this.isShowingMainData});
+  MyLineChart({this.isShowingMainData});
 
   final bool isShowingMainData;
 

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 
@@ -9,8 +11,107 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      persistentFooterButtons: [
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: PreferredSize(
+              preferredSize:
+                  Size.fromHeight(MediaQuery.of(context).size.height),
+              child: Container(
+                  color: Colors.grey[100],
+                  height: 50.0,
+                  child: TabBar(
+                    labelColor: Colors.green,
+                    unselectedLabelColor: Colors.grey,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorWeight: 4,
+                    labelStyle:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    tabs: [
+                      Wrap(
+                        children: [
+                          Icon(Icons.inbox_outlined),
+                          Text("Income"),
+                        ],
+                      ),
+                      Wrap(
+                        children: [
+                          Icon(Icons.outbox_outlined),
+                          Text("Expense"),
+                        ],
+                      ),
+                    ],
+                  ))),
+          body: TabBarView(
+            children: [
+              Column(
+                children: [
+                  ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(primary: color.inComeColor),
+                      onPressed: () {},
+                      child: Wrap(
+                        direction: Axis.horizontal,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          Icon(
+                            Icons.add,
+                            size: 16,
+                          ),
+                          Text("Add Income Category"),
+                        ],
+                      )),
+                  Expanded(
+                      child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 16,
+                    itemBuilder: (context, i) {
+                      return ListTile(
+                        dense: true,
+                        leading: Icon(Icons.monetization_on_outlined),
+                        title: Text("Part-time Job"),
+                      );
+                    },
+                  ))
+                ],
+              ),
+              Column(
+                children: [
+                  ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(primary: color.expenseColor),
+                      onPressed: () {},
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          Icon(
+                            Icons.add,
+                            size: 16,
+                          ),
+                          Text(
+                            "Add Expense Category",
+                          ),
+                        ],
+                      )),
+                  Expanded(
+                      child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 16,
+                    itemBuilder: (context, i) {
+                      return ListTile(
+                        dense: true,
+                        leading: Icon(Icons.monetization_on_outlined),
+                        title: Text("Part-time Job"),
+                      );
+                    },
+                  ))
+                ],
+              ),
+            ],
+          ),
+          /*    persistentFooterButtons: [
         Row(
           children: [
             Expanded(
@@ -20,6 +121,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     child: Wrap(
                       direction: Axis.horizontal,
                       crossAxisAlignment: WrapCrossAlignment.center,
+                      // ignore: prefer_const_literals_to_create_immutables
                       children: [
                         Icon(
                           Icons.add,
@@ -38,6 +140,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     onPressed: () {},
                     child: Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
+                      // ignore: prefer_const_literals_to_create_immutables
                       children: [
                         Icon(
                           Icons.add,
@@ -109,7 +212,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ],
           )
         ],
-      )),
-    );
+      )), */
+        ));
   }
 }

@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(dimens.textFieldBorderRadius)),
-      elevation: 1,
+      elevation: 0,
       child: ListTile(
         leading: Container(
           decoration: BoxDecoration(
@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: EdgeInsets.only(left: 20, right: 20),
+      padding: EdgeInsets.only(left: 16, right: 16),
       child: Column(
         children: [
           _userInfoSection(),

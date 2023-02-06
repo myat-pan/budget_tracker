@@ -11,9 +11,12 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MyLineChart(
+        body: Container(
+      padding: EdgeInsets.all(16),
+      height: 300,
+      child: MyLineChart(
         isShowingMainData: true,
       ),
-    );
+    ));
   }
 }
