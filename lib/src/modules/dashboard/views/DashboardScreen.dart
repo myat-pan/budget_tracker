@@ -88,18 +88,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
           itemCount: 2,
           itemBuilder: (context, index) {
             return ListTile(
-              visualDensity: VisualDensity(horizontal: -4, vertical: -3),
-              leading: Icon(Icons.food_bank_outlined),
-              title: Text("food "),
-              subtitle: Text(
-                "data",
-                style: TextStyle(color: color.subtitleColor),
-              ),
-              trailing: Text(
-                "-5000",
-                style: TextStyle(color: color.expenseColor),
-              ),
-            );
+                visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                leading: Icon(Icons.food_bank_outlined),
+                title: Text("food "),
+                subtitle: Text(
+                  "data",
+                  style: TextStyle(color: color.subtitleColor),
+                ),
+                trailing: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text(
+                        "-5000",
+                        style: TextStyle(color: color.expenseColor),
+                      ),
+                      IconButton(
+                          onPressed: () {},
+                          visualDensity: VisualDensity(horizontal: -4),
+                          icon: Icon(
+                            Icons.close,
+                            size: 16,
+                          ))
+                    ]));
           }),
     );
   }
@@ -115,28 +125,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 children: [
-                  Wrap(children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      alignment: Alignment.center,
-                      color: Colors.grey[300],
-                      child: Text(
-                        "January 21",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    alignment: Alignment.center,
+                    color: Colors.grey[300],
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "January 21",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Wrap(children: [
+                            Text("Income: 0"),
+                            SizedBox(
+                              width: 6,
+                            ),
+                            Text("Expense: 0"),
+                          ]),
+                        ]),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 6),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "10% of your monthly Income was spent.",
+                      style: TextStyle(
+                        color: color.messageColor,
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.only(top: 6),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "10% of your monthly Income was spent.",
-                        style: TextStyle(
-                          color: color.messageColor,
-                        ),
-                      ),
-                    ),
-                    _dailyBudgetWidget()
-                  ]),
+                  ),
+                  _dailyBudgetWidget()
                 ]);
           }),
     );
