@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
+import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,7 +34,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         children: [
           TextFormFieldWidget(
             controller: _nameController,
-            icon: Icons.person,
+            icon: CustomIcons.user_outline,
+            iconSize: 18,
             labelText: "Name",
           ),
           SizedBox(
@@ -41,7 +43,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           TextFormFieldWidget(
             controller: _emailController,
-            icon: Icons.mail,
+            icon: CustomIcons.mail,
+            iconSize: 16,
             labelText: "Email",
           ),
           SizedBox(
@@ -50,6 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           TextFormFieldWidget(
             controller: _passwordController,
             icon: Icons.lock_open_outlined,
+            iconSize: 20,
             labelText: "Password",
           ),
           SizedBox(
@@ -58,6 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           TextFormFieldWidget(
             controller: _retypePasswordController,
             icon: Icons.lock_open_outlined,
+            iconSize: 20,
             labelText: "Password",
           ),
           SizedBox(

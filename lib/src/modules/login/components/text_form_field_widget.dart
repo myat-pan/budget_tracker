@@ -5,9 +5,10 @@ class TextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final IconData icon;
   final String labelText;
+  final int iconSize;
 
   const TextFormFieldWidget(
-      {Key key, this.controller, this.icon, this.labelText})
+      {Key key, this.controller, this.icon, this.labelText, this.iconSize})
       : super(key: key);
 
   @override
@@ -24,6 +25,7 @@ class TextFormFieldWidget extends StatelessWidget {
               fillColor: Colors.grey[300],
               prefixIcon: Icon(
                 icon,
+                size: iconSize.toDouble(),
                 color: Colors.black.withOpacity(0.7),
               ),
               labelText: labelText,

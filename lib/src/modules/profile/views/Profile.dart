@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
@@ -40,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           width: 50,
           height: 50,
           child: Icon(
-            Icons.person,
+            CustomIcons.user,
             color: Colors.white,
           ),
         ),
@@ -49,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         trailing: IconButton(
             onPressed: () {},
             icon: Icon(
-              Icons.exit_to_app,
+              CustomIcons.logout_1,
               color: Colors.red,
             )),
       ),

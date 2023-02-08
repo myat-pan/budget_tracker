@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:budget_tracker/src/modules/statistics/views/LineChart.dart';
 import 'package:budget_tracker/src/res/dimens.dart' as dimen;
+import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -45,6 +46,59 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 _titleWidget(
                   "Monthly Financial Graph",
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 20,
+                  child: ListView(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Container(
+                            margin: EdgeInsets.only(left: 4, right: 4),
+                            child: Wrap(
+                              children: [
+                                Container(
+                                  width: 40,
+                                  height: 14,
+                                  decoration:
+                                      BoxDecoration(color: Colors.green),
+                                ),
+                                Text("Income"),
+                              ],
+                            )),
+                        Container(
+                            margin: EdgeInsets.only(left: 4, right: 4),
+                            child: Wrap(
+                              children: [
+                                Container(
+                                  width: 40,
+                                  height: 14,
+                                  decoration: BoxDecoration(color: Colors.red),
+                                ),
+                                Text("Expense"),
+                              ],
+                            ))
+                      ]),
+
+                  /*     child: Wrap(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      Wrap(direction: Axis.horizontal, children: [
+                        Container(
+                          width: 40,
+                          height: 20,
+                          decoration: BoxDecoration(color: Colors.green),
+                        ),
+                        Text("Income"),
+                      ]),
+                      Container(),
+                      Text("Expense")
+                    ],
+                  ), */
+                ),
                 Container(
                     padding: EdgeInsets.all(16),
                     height: 300,
@@ -83,184 +137,199 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     return Container(
         margin: EdgeInsets.all(8),
         child: Card(
-            child: Column(
-          children: [
-            _titleWidget("Financial Progress Bar"),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              width: 300,
-              height: 20,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(
-                    Radius.circular(dimen.textFieldBorderRadius)),
-                child: LinearProgressIndicator(
-                  value: 0.7,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                  backgroundColor: Color(0xffD6D6D6),
-                ),
-              ),
-            ),
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              direction: Axis.horizontal,
-              children: [
-                Icon(Icons.auto_graph),
-                Text("You have spent 56% of your income in 2023")
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-          ],
-        )));
-  }
-
-  _pieChartSection() {
-    return Container(
-        margin: EdgeInsets.all(8),
-        height: Get.height / 1.8,
-        child: Card(
             color: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(dimen.borderRadius)),
             elevation: 1,
-            child: Column(children: [
-              _titleWidget("Financial Amount Detail on Category"),
-              SizedBox(
-                height: 16,
-              ),
-              Expanded(
+            child: Column(
+              children: [
+                _titleWidget("Financial Progress Bar"),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  width: 300,
+                  height: 20,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(dimen.textFieldBorderRadius)),
+                    child: LinearProgressIndicator(
+                      value: 0.7,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                      backgroundColor: Color(0xffD6D6D6),
+                    ),
+                  ),
+                ),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  direction: Axis.horizontal,
+                  children: [
+                    Icon(
+                      CustomIcons.chart_line,
+                      size: 16,
+                    ),
+                    Text("You have spent 56% of your income in 2023")
+                  ],
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+              ],
+            )));
+  }
+
+  _pieChartSection() {
+    return Container(
+      margin: EdgeInsets.all(8),
+      height: Get.height / 1.8,
+      child: Card(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(dimen.borderRadius)),
+        elevation: 1,
+        child: Column(
+          children: [
+            _titleWidget("Financial Amount Detail on Category"),
+            SizedBox(
+              height: 16,
+            ),
+            Expanded(
+              child: DefaultTabController(
+                length: 2,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: DefaultTabController(
-                        length: 2,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Container(
-                              color: Colors.white,
-                              height: 40,
-                              constraints: BoxConstraints.expand(height: 30),
-                              child: TabBar(
-                                  onTap: (value) {
-                                    setState(() {
-                                      _index = value;
-                                    });
-                                  },
-                                  labelColor: Colors.white,
-                                  unselectedLabelColor: Colors.grey,
-                                  indicatorSize: TabBarIndicatorSize.label,
-                                  indicator: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          dimen.borderRadius),
-                                      color: _index == 0
-                                          ? Colors.green
-                                          : Colors.red),
-                                  tabs: [
-                                    Tab(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                dimen.borderRadius),
-                                            border: Border.all(
-                                                color: Colors.grey, width: 1)),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text("Income"),
-                                        ),
-                                      ),
-                                    ),
-                                    Tab(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                dimen.borderRadius),
-                                            border: Border.all(
-                                                color: Colors.grey, width: 1)),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text("Expense"),
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
+                  children: <Widget>[
+                    Container(
+                      color: Colors.white,
+                      height: 40,
+                      constraints: BoxConstraints.expand(height: 30),
+                      child: TabBar(
+                          onTap: (value) {
+                            setState(() {
+                              _index = value;
+                            });
+                          },
+                          labelColor: Colors.white,
+                          unselectedLabelColor: Colors.grey,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicator: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(dimen.borderRadius),
+                              color: _index == 0 ? Colors.green : Colors.red),
+                          tabs: [
+                            Tab(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        dimen.borderRadius),
+                                    border: Border.all(
+                                        color: Colors.grey, width: 1)),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text("Income"),
+                                ),
+                              ),
                             ),
-                            Expanded(
-                              child: TabBarView(children: [
-                                Container(
-                                    padding: EdgeInsets.all(16),
-                                    height: 300,
-                                    child: PieChart(PieChartData(
-                                        pieTouchData:
-                                            PieTouchData(enabled: true),
-                                        centerSpaceRadius: 6,
-                                        borderData: FlBorderData(
-                                            show: true,
-                                            border:
-                                                Border.all(color: Colors.grey)),
-                                        sectionsSpace: 2,
-                                        sections: [
-                                          PieChartSectionData(
-                                              value: 35,
-                                              color: Colors.purple,
-                                              radius: 100),
-                                          PieChartSectionData(
-                                              value: 40,
-                                              color: Colors.amber,
-                                              radius: 100),
-                                          PieChartSectionData(
-                                              value: 55,
-                                              color: Colors.green,
-                                              radius: 100),
-                                          PieChartSectionData(
-                                              value: 70,
-                                              color: Colors.red,
-                                              radius: 100),
-                                        ]))),
-                                Container(
-                                    padding: EdgeInsets.all(16),
-                                    height: 300,
-                                    child: PieChart(PieChartData(
-                                        pieTouchData:
-                                            PieTouchData(enabled: true),
-                                        centerSpaceRadius: 6,
-                                        borderData: FlBorderData(
-                                            show: true,
-                                            border:
-                                                Border.all(color: Colors.grey)),
-                                        sectionsSpace: 2,
-                                        sections: [
-                                          PieChartSectionData(
-                                              value: 35,
-                                              color: Colors.purple,
-                                              radius: 100),
-                                          PieChartSectionData(
-                                              value: 40,
-                                              color: Colors.amber,
-                                              radius: 100),
-                                          PieChartSectionData(
-                                              value: 55,
-                                              color: Colors.green,
-                                              radius: 100),
-                                          PieChartSectionData(
-                                              value: 70,
-                                              color: Colors.red,
-                                              radius: 100),
-                                        ])))
-                              ]),
-                            )
-                          ],
-                        ),
-                      ),
+                            Tab(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        dimen.borderRadius),
+                                    border: Border.all(
+                                        color: Colors.grey, width: 1)),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text("Expense"),
+                                ),
+                              ),
+                            ),
+                          ]),
                     ),
+                    Expanded(
+                        child: TabBarView(children: [
+                      Wrap(alignment: WrapAlignment.center, children: [
+                        Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(18),
+                            child: Text("Income Amount on Category",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500))),
+                        Container(
+                            padding: EdgeInsets.all(16),
+                            height: 260,
+                            child: PieChart(PieChartData(
+                                pieTouchData: PieTouchData(enabled: true),
+                                centerSpaceRadius: 6,
+                                borderData: FlBorderData(
+                                    show: true,
+                                    border: Border.all(color: Colors.grey)),
+                                sectionsSpace: 2,
+                                sections: [
+                                  PieChartSectionData(
+                                      value: 35,
+                                      color: Colors.purple,
+                                      radius: 100),
+                                  PieChartSectionData(
+                                      value: 40,
+                                      color: Colors.amber,
+                                      radius: 100),
+                                  PieChartSectionData(
+                                      value: 55,
+                                      color: Colors.green,
+                                      radius: 100),
+                                  PieChartSectionData(
+                                      value: 70,
+                                      color: Colors.red,
+                                      radius: 100),
+                                ]))),
+                        Text("You have no income.")
+                      ]),
+                      Wrap(alignment: WrapAlignment.center, children: [
+                        Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(18),
+                            child: Text("Expense Amount on Category",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500))),
+                        Container(
+                            padding: EdgeInsets.all(16),
+                            height: 260,
+                            child: PieChart(PieChartData(
+                                pieTouchData: PieTouchData(enabled: true),
+                                centerSpaceRadius: 6,
+                                borderData: FlBorderData(
+                                    show: true,
+                                    border: Border.all(color: Colors.grey)),
+                                sectionsSpace: 2,
+                                sections: [
+                                  PieChartSectionData(
+                                      value: 35,
+                                      color: Colors.purple,
+                                      radius: 100),
+                                  PieChartSectionData(
+                                      value: 40,
+                                      color: Colors.amber,
+                                      radius: 100),
+                                  PieChartSectionData(
+                                      value: 55,
+                                      color: Colors.green,
+                                      radius: 100),
+                                  PieChartSectionData(
+                                      value: 70,
+                                      color: Colors.red,
+                                      radius: 100),
+                                ]))),
+                        Text("You have no income.")
+                      ])
+                    ]))
                   ],
                 ),
               ),
-            ])));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override

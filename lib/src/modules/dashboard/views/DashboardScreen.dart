@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/format.dart' as format;
 import 'package:budget_tracker/src/res/colors.dart' as color;
@@ -63,7 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: _incomeAndexpenseWidget(
               cardColor: color.inComeColor,
               title: "Income",
-              icon: Icons.inbox,
+              icon: CustomIcons.move_to_inbox,
               amount: 500000,
               iconColor: color.inComeColor),
         ),
@@ -187,8 +188,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Icon(
-                        Icons.monetization_on_outlined,
-                        size: 28,
+                        CustomIcons.dollar,
+                        size: 26,
                       ),
                       Text(
                         format.numberFormat.format(50000).toString(),

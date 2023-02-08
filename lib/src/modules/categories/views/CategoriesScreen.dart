@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimen;
@@ -60,8 +61,8 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                             Wrap(
                               children: [
                                 Icon(
-                                  Icons.inbox_outlined,
-                                  size: 18,
+                                  CustomIcons.move_to_inbox,
+                                  size: 20,
                                   color: Colors.green,
                                 ),
                                 Text(
@@ -124,7 +125,10 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                     itemBuilder: (context, i) {
                       return ListTile(
                         dense: true,
-                        leading: Icon(Icons.monetization_on_outlined),
+                        leading: Icon(
+                          CustomIcons.dollar,
+                          size: 18,
+                        ),
                         title: Text("Part-time Job"),
                       );
                     },
@@ -165,7 +169,10 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                     itemBuilder: (context, i) {
                       return ListTile(
                         dense: true,
-                        leading: Icon(Icons.monetization_on_outlined),
+                        leading: Icon(
+                          CustomIcons.dollar,
+                          size: 18,
+                        ),
                         title: Text("Part-time Job"),
                         trailing: Icon(
                           Icons.close,

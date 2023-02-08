@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:budget_tracker/src/modules/categories/views/CategoriesScreen.dart';
 import 'package:budget_tracker/src/modules/dashboard/views/DashboardScreen.dart';
 import 'package:budget_tracker/src/modules/profile/views/Profile.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
 import 'package:budget_tracker/src/modules/statistics/views/StatisticsScreen.dart';
+import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/styles.dart' as style;
@@ -64,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.grey[200],
                 selectedItemColor: color.inComeColor,
                 selectedFontSize: 12,
-                selectedIconTheme: IconThemeData(size: 24),
+                selectedIconTheme: IconThemeData(size: 20),
                 unselectedIconTheme: IconThemeData(size: 16),
                 unselectedItemColor: Colors.black54,
                 unselectedFontSize: 10,
@@ -75,16 +78,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     _currentIndex = index;
                   });
                 },
+                // ignore: prefer_const_literals_to_create_immutables
                 items: [
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.home_outlined), label: 'Dashboard'),
+                      icon: Icon(
+                        CustomIcons.home_outline,
+                      ),
+                      label: 'Dashboard'),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.list_alt_outlined), label: 'Categories'),
+                      icon: Icon(
+                        CustomIcons.th_list_outline,
+                      ),
+                      label: 'Categories'),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.auto_graph_outlined),
-                      label: 'Statistics'),
+                      icon: Icon(CustomIcons.pie_chart), label: 'Statistics'),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.person_outline), label: 'Profile')
+                      icon: Icon(CustomIcons.user_outline), label: 'Profile')
                 ]),
           ),
         ),
@@ -97,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 4,
           backgroundColor: Colors.blueGrey,
           child: Icon(
-            Icons.add_outlined,
+            CustomIcons.plus_squared_alt,
             color: Colors.white,
           ),
           onPressed: () => setState(() {
