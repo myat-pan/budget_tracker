@@ -9,6 +9,7 @@ import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/styles.dart' as style;
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -104,18 +105,73 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.all(0),
+        padding: const EdgeInsets.all(2),
         child: FloatingActionButton(
-          elevation: 4,
-          backgroundColor: Colors.blueGrey,
-          child: Icon(
-            CustomIcons.plus_squared_alt,
-            color: Colors.white,
-          ),
-          onPressed: () => setState(() {
-            _currentIndex = 1;
-          }),
-        ),
+            elevation: 4,
+            backgroundColor: Colors.blueGrey,
+            child: Icon(
+              CustomIcons.plus_squared_alt,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                        height: Get.height / 4,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text("Choose One"),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 1,
+                                    child: Wrap(
+                                      alignment: WrapAlignment.center,
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
+                                      direction: Axis.vertical,
+                                      children: [
+                                        Icon(
+                                          CustomIcons.move_to_inbox,
+                                          color: Colors.green,
+                                          size: 60,
+                                        ),
+                                        Text("Income"),
+                                      ],
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Wrap(
+                                      alignment: WrapAlignment.center,
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
+                                      direction: Axis.vertical,
+                                      children: [
+                                        Icon(
+                                          Icons.outbox,
+                                          color: Colors.red,
+                                          size: 60,
+                                        ),
+                                        Text("Expense"),
+                                      ],
+                                    )),
+                              ],
+                            ),
+                            Container(
+                                width: Get.width / 2,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    child: Text("Cancel")))
+                          ],
+                        ));
+                  });
+            }),
       ),
     );
   }
