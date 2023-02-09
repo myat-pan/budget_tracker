@@ -2,13 +2,14 @@
 
 import 'package:budget_tracker/src/modules/categories/views/CategoriesScreen.dart';
 import 'package:budget_tracker/src/modules/dashboard/views/DashboardScreen.dart';
-import 'package:budget_tracker/src/modules/profile/views/Profile.dart';
+import 'package:budget_tracker/src/modules/profile/views/ProfileScreen.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
 import 'package:budget_tracker/src/modules/statistics/views/StatisticsScreen.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/styles.dart' as style;
+import 'package:budget_tracker/src/res/dimens.dart' as dimen;
 import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -115,6 +116,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             onPressed: () {
               showModalBottomSheet(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(dimen.borderRadius)),
                   context: context,
                   builder: (context) {
                     return Container(
@@ -124,45 +128,58 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text("Choose One"),
+                            Text(
+                              "Choose",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 1,
-                                    child: Wrap(
-                                      alignment: WrapAlignment.center,
-                                      crossAxisAlignment:
-                                          WrapCrossAlignment.center,
-                                      direction: Axis.vertical,
-                                      children: [
-                                        Icon(
-                                          CustomIcons.move_to_inbox,
-                                          color: Colors.green,
-                                          size: 60,
-                                        ),
-                                        Text("Income"),
-                                      ],
-                                    )),
+                                    child: GestureDetector(
+                                        onTap: (() {}),
+                                        child: Wrap(
+                                          alignment: WrapAlignment.center,
+                                          crossAxisAlignment:
+                                              WrapCrossAlignment.center,
+                                          runAlignment: WrapAlignment.center,
+                                          direction: Axis.vertical,
+                                          children: [
+                                            Icon(
+                                              CustomIcons.move_to_inbox,
+                                              color: Colors.green,
+                                              size: 50,
+                                            ),
+                                            Text("Income"),
+                                          ],
+                                        ))),
                                 Expanded(
                                     flex: 1,
-                                    child: Wrap(
-                                      alignment: WrapAlignment.center,
-                                      crossAxisAlignment:
-                                          WrapCrossAlignment.center,
-                                      direction: Axis.vertical,
-                                      children: [
-                                        Icon(
-                                          Icons.outbox,
-                                          color: Colors.red,
-                                          size: 60,
-                                        ),
-                                        Text("Expense"),
-                                      ],
-                                    )),
+                                    child: GestureDetector(
+                                        onTap: (() {}),
+                                        child: Wrap(
+                                          runAlignment: WrapAlignment.center,
+                                          alignment: WrapAlignment.center,
+                                          crossAxisAlignment:
+                                              WrapCrossAlignment.center,
+                                          direction: Axis.vertical,
+                                          children: [
+                                            Icon(
+                                              Icons.outbox,
+                                              color: Colors.red,
+                                              size: 50,
+                                            ),
+                                            Text("Expense"),
+                                          ],
+                                        ))),
                               ],
                             ),
                             Container(
-                                width: Get.width / 2,
+                                width: Get.width / 1.1,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        dimen.textFieldBorderRadius)),
                                 child: ElevatedButton(
                                     onPressed: () {
                                       Get.back();

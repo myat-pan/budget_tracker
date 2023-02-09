@@ -1,5 +1,6 @@
 import 'package:budget_tracker/src/modules/home/views/HomeScreen.dart';
 import 'package:budget_tracker/src/modules/login/components/text_form_field_widget.dart';
+import 'package:budget_tracker/src/modules/login/controller/LoginController.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final LoginController controller = Get.put(LoginController());
 
   _loginSection() {
     return Container(
@@ -47,8 +49,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(dimens.borderRadius))),
-                  onPressed: () {
-                    Get.offAll(HomeScreen(), transition: Transition.downToUp);
+                  onPressed: () async {
+                    await controller.makeLogin(
+                        _emailController.text, _passwordController.text);
+                    if (controller.loginResult.value.status == true) {
+                      Get.offAll(HomeScreen(), transition: Transition.downToUp);
+                    } else {
+                      Get.defaultDialog(
+                          title: "Login Fail",
+                          content: Text(controller.loginResult.value.message));
+                    }
                   },
                   child: Text("Sign In"))),
           SizedBox(
