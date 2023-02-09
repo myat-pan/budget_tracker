@@ -24,4 +24,5 @@ const smallHintStyle = TextStyle(
   color: Colors.grey,
 );
 
-const appBarStyle = TextStyle(color: Colors.black, letterSpacing: 2);
+const appBarStyle =
+    TextStyle(color: Colors.black, letterSpacing: 2, fontSize: 20);

@@ -2,6 +2,7 @@ import 'package:budget_tracker/src/modules/home/views/HomeScreen.dart';
 import 'package:budget_tracker/src/modules/login/components/text_form_field_widget.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           TextFormFieldWidget(
             controller: _passwordController,
-            icon: Icons.lock_open_outlined,
+            icon: CupertinoIcons.lock,
             iconSize: 20,
             labelText: "Password",
           ),

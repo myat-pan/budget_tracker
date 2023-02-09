@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.grey[200],
                 selectedItemColor: color.inComeColor,
                 selectedFontSize: 12,
-                selectedIconTheme: IconThemeData(size: 20),
+                selectedIconTheme: IconThemeData(size: 18),
                 unselectedIconTheme: IconThemeData(size: 16),
                 unselectedItemColor: Colors.black54,
                 unselectedFontSize: 10,
@@ -82,16 +82,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 items: [
                   BottomNavigationBarItem(
                       icon: Icon(
-                        CustomIcons.home_outline,
+                        CustomIcons.home,
                       ),
                       label: 'Dashboard'),
                   BottomNavigationBarItem(
                       icon: Icon(
-                        CustomIcons.th_list_outline,
+                        CustomIcons.th_thumb_empty,
                       ),
                       label: 'Categories'),
                   BottomNavigationBarItem(
-                      icon: Icon(CustomIcons.pie_chart), label: 'Statistics'),
+                      icon: Icon(
+                        CustomIcons.pie_chart,
+                      ),
+                      label: 'Statistics'),
                   BottomNavigationBarItem(
                       icon: Icon(CustomIcons.user_outline), label: 'Profile')
                 ]),

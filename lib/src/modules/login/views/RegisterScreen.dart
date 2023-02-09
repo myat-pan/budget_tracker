@@ -2,6 +2,7 @@
 
 import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,8 +35,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         children: [
           TextFormFieldWidget(
             controller: _nameController,
-            icon: CustomIcons.user_outline,
-            iconSize: 18,
+            icon: CupertinoIcons.person,
+            iconSize: 20,
             labelText: "Name",
           ),
           SizedBox(
@@ -52,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           TextFormFieldWidget(
             controller: _passwordController,
-            icon: Icons.lock_open_outlined,
+            icon: CupertinoIcons.lock,
             iconSize: 20,
             labelText: "Password",
           ),
@@ -61,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           TextFormFieldWidget(
             controller: _retypePasswordController,
-            icon: Icons.lock_open_outlined,
+            icon: CupertinoIcons.lock,
             iconSize: 20,
             labelText: "Password",
           ),

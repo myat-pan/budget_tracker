@@ -78,6 +78,7 @@ flutter:
     - family: CustomIcons
       fonts:
         - asset: assets/fonts/CustomIcons.ttf
+          weight: 900
 
   #   - family: Trajan Pro
   #     fonts:

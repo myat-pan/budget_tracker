@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:budget_tracker/src/modules/statistics/views/LineChart.dart';
 import 'package:budget_tracker/src/res/dimens.dart' as dimen;
+import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -179,7 +180,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   _pieChartSection() {
     return Container(
       margin: EdgeInsets.all(8),
-      height: Get.height / 1.8,
+      height: Get.height / 1.6,
       child: Card(
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -332,6 +333,71 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     );
   }
 
+  DateTime selectedDate = DateTime.now();
+  _buildMaterialDatePicker(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2025),
+      initialEntryMode: DatePickerEntryMode.calendar,
+      initialDatePickerMode: DatePickerMode.year,
+      helpText: 'Choose date',
+      cancelText: 'Cancel',
+      confirmText: 'Save',
+      errorFormatText: 'Invalid date format',
+      errorInvalidText: 'Invalid date format',
+      fieldLabelText: 'Start date',
+      fieldHintText: 'Year/Month/Date',
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark(),
+          child: child,
+        );
+      },
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+  _yearPickerSection() {
+    return Container(
+        width: Get.width / 3,
+        //  margin: EdgeInsets.only(left: 28, right: 28),
+        child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(dimen.textFieldBorderRadius)),
+                side: BorderSide(
+                  color: color.primary,
+                )),
+            onPressed: () {
+              _buildMaterialDatePicker(context);
+            },
+            child: Wrap(
+              children: [
+                Icon(
+                  CustomIcons.calendar_outlilne,
+                  size: 16,
+                  color: color.messageColor,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  "2023",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: color.messageColor,
+                  ),
+                )
+              ],
+            )));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -340,6 +406,22 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
+                Container(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text(
+                        "Choose Year",
+                        style:
+                            TextStyle(color: color.messageColor, fontSize: 14),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      _yearPickerSection(),
+                    ],
+                  ),
+                ),
                 _graphSection(),
                 _financialProgressBar(),
                 _pieChartSection()
