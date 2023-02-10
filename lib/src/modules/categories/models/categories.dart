@@ -41,8 +41,8 @@ class Categories {
 
   int id;
   String name;
-  Type type;
-  Color color;
+  String type;
+  String color;
   String iconImage;
   int isDefault;
   int userId;
@@ -53,8 +53,8 @@ class Categories {
   Categories copyWith({
     int id,
     String name,
-    Type type,
-    Color color,
+    String type,
+    String color,
     String iconImage,
     int isDefault,
     int userId,
@@ -75,7 +75,3 @@ class Categories {
         deletedAt: deletedAt ?? this.deletedAt,
       );
 }
-
-enum Color { FF0000 }
-
-enum Type { EXPENSE, INCOME }

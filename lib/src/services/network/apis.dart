@@ -97,9 +97,9 @@ class APIs {
   }
 
   static Future<CategoriesResult> fetchCategories() async {
-    var _url = _serverUrl + "/profile";
+    var _url = _serverUrl + "/categories";
     var token = await storage.read(key: "token");
-    var res = await http.post(Uri.parse(_url), headers: {
+    var res = await http.get(Uri.parse(_url), headers: {
       HttpHeaders.acceptHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
     });
