@@ -111,13 +111,13 @@ class APIs {
           message: result['message'],
           incomeCategories: result['income_categories'].map<Categories>((list) {
             return Categories(
-              id: list['id'],
+              id: int.parse(list['id']),
               name: list['name'],
               type: list['type'],
               color: list['color'],
               iconImage: list['icon_image'],
               isDefault: list['is_default'],
-              userId: list['user_id'],
+              //  userId: list['user_id'],
             );
           }).toList(),
           expenseCategories:
@@ -129,7 +129,7 @@ class APIs {
               color: list['color'],
               iconImage: list['icon_image'],
               isDefault: list['is_default'],
-              userId: list['user_id'],
+              //  userId: list['user_id'],
             );
           }).toList());
     } else {}

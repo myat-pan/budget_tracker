@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final LoginController controller = Get.put(LoginController());
+  final _passwordVisible = false;
 
   _loginSection() {
     return Container(
@@ -27,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: _emailController,
             icon: CustomIcons.mail,
             labelText: "Email",
+            showSuffix: false,
+            obsecureText: true,
             iconSize: 16,
           ),
           SizedBox(
@@ -36,6 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: _passwordController,
             icon: CupertinoIcons.lock,
             iconSize: 20,
+            showSuffix: true,
+            obsecureText: _passwordVisible,
             labelText: "Password",
           ),
           SizedBox(

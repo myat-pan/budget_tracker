@@ -8,6 +8,7 @@ import 'package:budget_tracker/src/res/format.dart' as format;
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -242,6 +243,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
       });
   }
 
+  Widget getDateRangePicker() {
+    return Container(
+        height: 600,
+        child: Card(
+            child: SfDateRangePicker(
+          view: DateRangePickerView.month,
+          selectionMode: DateRangePickerSelectionMode.single,
+          //     onSelectionChanged: selectionChanged,
+        )));
+  }
+
   _monthPickerSection() {
     return Container(
 
@@ -255,7 +267,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: color.primary,
                 )),
             onPressed: () {
-              _buildMaterialDatePicker(context);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        title: Text(''),
+                        content: Container(
+                          height: 600,
+                          child: Column(
+                            children: <Widget>[
+                              getDateRangePicker(),
+                              MaterialButton(
+                                child: Text("OK"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          ),
+                        ));
+                  });
             },
             child: Wrap(
               children: [

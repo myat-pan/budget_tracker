@@ -72,112 +72,109 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Obx(() => controller.isLoading.value
+        body:
+            /*   Obx(() => controller.isLoading.value
             ? Center(
                 child: CustomLoading(),
               )
-            : Container(
-                child: Column(
-                  children: [
-                    _userInfoSection(),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Expanded(
-                        flex: 0,
-                        child: Container(
-                            padding: EdgeInsets.only(
-                                left: 18, right: 18, top: 8, bottom: 8),
-                            color: Colors.grey[200],
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  DateTime.now().year.toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                                Text(
-                                  "+5000",
-                                  style: TextStyle(
-                                      color: color.inComeColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                )
-                              ],
-                            ))),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Expanded(
-                        flex: 3,
-                        child: Container(
-                            padding: EdgeInsets.only(left: 16, right: 16),
-                            child: ScrollConfiguration(
-                              behavior: ScrollBehavior(),
-                              child: DataTable2(
-                                  dataRowHeight: 28,
-                                  headingRowColor:
-                                      MaterialStateColor.resolveWith(
-                                    (states) {
-                                      return color.dataHeadingColor;
-                                    },
-                                  ),
-                                  dataRowColor: MaterialStateColor.resolveWith(
-                                    (states) {
-                                      return color.dataRowColor;
-                                    },
-                                  ),
-                                  border: TableBorder.all(
-                                      width: 1, color: Colors.black38),
-                                  showBottomBorder: true,
-                                  columnSpacing: 14,
-                                  horizontalMargin: 14,
-                                  minWidth: 40,
-                                  columns: [
-                                    DataColumn2(
-                                      label: Text('Month'),
-                                      size: ColumnSize.S,
-                                    ),
-                                    DataColumn2(
-                                      label: Text('Income'),
-                                      size: ColumnSize.L,
-                                    ),
-                                    DataColumn2(
-                                      label: Text('Expense'),
-                                      size: ColumnSize.L,
-                                    ),
-                                    DataColumn2(
-                                      label: Text('Balance'),
-                                      size: ColumnSize.L,
-                                    ),
-                                  ],
-                                  rows: List<DataRow>.generate(
-                                      _months.length,
-                                      (i) => DataRow(cells: [
-                                            DataCell(Text(
-                                              _months[i],
-                                              style: TextStyle(
-                                                  color: color.messageColor),
-                                            )),
-                                            DataCell(Center(
-                                                child: Text(
-                                              '0',
-                                              style: TextStyle(
-                                                  color: color.inComeColor),
-                                            ))),
-                                            DataCell(Center(
-                                                child: Text(
-                                              '0',
-                                              style: TextStyle(
-                                                  color: color.expenseColor),
-                                            ))),
-                                            DataCell(Center(child: Text('0'))),
-                                          ]))),
-                            )))
-                  ],
-                ),
-              )));
+            :  */
+            Container(
+      child: Column(
+        children: [
+          _userInfoSection(),
+          SizedBox(
+            height: 8,
+          ),
+          Expanded(
+              flex: 0,
+              child: Container(
+                  padding:
+                      EdgeInsets.only(left: 18, right: 18, top: 8, bottom: 8),
+                  color: Colors.grey[200],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        DateTime.now().year.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      Text(
+                        "+5000",
+                        style: TextStyle(
+                            color: color.inComeColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      )
+                    ],
+                  ))),
+          SizedBox(
+            height: 8,
+          ),
+          Expanded(
+              flex: 3,
+              child: Container(
+                  padding: EdgeInsets.only(left: 16, right: 16),
+                  child: ScrollConfiguration(
+                    behavior: ScrollBehavior(),
+                    child: DataTable2(
+                        dataRowHeight: 28,
+                        headingRowColor: MaterialStateColor.resolveWith(
+                          (states) {
+                            return color.dataHeadingColor;
+                          },
+                        ),
+                        dataRowColor: MaterialStateColor.resolveWith(
+                          (states) {
+                            return color.dataRowColor;
+                          },
+                        ),
+                        border:
+                            TableBorder.all(width: 1, color: Colors.black38),
+                        showBottomBorder: true,
+                        columnSpacing: 14,
+                        horizontalMargin: 14,
+                        minWidth: 40,
+                        columns: [
+                          DataColumn2(
+                            label: Text('Month'),
+                            size: ColumnSize.S,
+                          ),
+                          DataColumn2(
+                            label: Text('Income'),
+                            size: ColumnSize.L,
+                          ),
+                          DataColumn2(
+                            label: Text('Expense'),
+                            size: ColumnSize.L,
+                          ),
+                          DataColumn2(
+                            label: Text('Balance'),
+                            size: ColumnSize.L,
+                          ),
+                        ],
+                        rows: List<DataRow>.generate(
+                            _months.length,
+                            (i) => DataRow(cells: [
+                                  DataCell(Text(
+                                    _months[i],
+                                    style: TextStyle(color: color.messageColor),
+                                  )),
+                                  DataCell(Center(
+                                      child: Text(
+                                    '0',
+                                    style: TextStyle(color: color.inComeColor),
+                                  ))),
+                                  DataCell(Center(
+                                      child: Text(
+                                    '0',
+                                    style: TextStyle(color: color.expenseColor),
+                                  ))),
+                                  DataCell(Center(child: Text('0'))),
+                                ]))),
+                  )))
+        ],
+      ),
+    ));
   }
 }

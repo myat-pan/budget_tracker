@@ -128,24 +128,30 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                         Text("Add Income Category"),
                                       ],
                                     ))),
-                            Expanded(
-                                child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller
-                                  .categories.value.incomeCategories.length,
-                              itemBuilder: (context, i) {
-                                return ListTile(
-                                  dense: true,
-                                  leading: Icon(
-                                    CustomIcons.dollar,
-                                    size: 18,
-                                  ),
-                                  title: Text(controller.categories.value
-                                      .incomeCategories[i].name),
-                                );
-                              },
-                            ))
+                            controller.categories.value.incomeCategories.isEmpty
+                                ? Expanded(
+                                    child: Center(
+                                      child: Text("No Child"),
+                                    ),
+                                  )
+                                : Expanded(
+                                    child: ListView.builder(
+                                    physics: BouncingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: controller.categories.value
+                                        .incomeCategories.length,
+                                    itemBuilder: (context, i) {
+                                      return ListTile(
+                                        dense: true,
+                                        leading: Icon(
+                                          CustomIcons.dollar,
+                                          size: 18,
+                                        ),
+                                        title: Text(controller.categories.value
+                                            .incomeCategories[i].name),
+                                      );
+                                    },
+                                  ))
                           ],
                         ),
                         Column(

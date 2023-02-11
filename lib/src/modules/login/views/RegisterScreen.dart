@@ -23,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController();
   // Default Radio Button Selected Item When App Starts.
   String radioButtonItem = 'ONE';
+  final _passwordVisible = false;
 
   // Group Value for Radio Button.
   int id = 1;
@@ -38,6 +39,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             icon: CupertinoIcons.person,
             iconSize: 20,
             labelText: "Name",
+            showSuffix: false,
+            obsecureText: true,
           ),
           SizedBox(
             height: 12,
@@ -47,6 +50,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             icon: CustomIcons.mail,
             iconSize: 16,
             labelText: "Email",
+            obsecureText: true,
+            showSuffix: false,
           ),
           SizedBox(
             height: 12,
@@ -56,6 +61,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             icon: CupertinoIcons.lock,
             iconSize: 20,
             labelText: "Password",
+            showSuffix: true,
+            obsecureText: _passwordVisible,
           ),
           SizedBox(
             height: 12,
@@ -65,6 +72,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             icon: CupertinoIcons.lock,
             iconSize: 20,
             labelText: "Password",
+            showSuffix: true,
+            obsecureText: _passwordVisible,
           ),
           SizedBox(
             height: 24,
