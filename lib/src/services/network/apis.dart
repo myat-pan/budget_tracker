@@ -111,7 +111,7 @@ class APIs {
           message: result['message'],
           incomeCategories: result['income_categories'].map<Categories>((list) {
             return Categories(
-              id: int.parse(list['id']),
+              id: list['id'],
               name: list['name'],
               type: list['type'],
               color: list['color'],

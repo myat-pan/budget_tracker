@@ -245,13 +245,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget getDateRangePicker() {
     return Container(
-        height: 600,
-        child: Card(
-            child: SfDateRangePicker(
-          view: DateRangePickerView.month,
+        height: 300,
+        child: SfDateRangePicker(
+          // onViewChanged: (),
+          onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+            print(args);
+          },
+          headerStyle: DateRangePickerHeaderStyle(
+              backgroundColor: color.primary,
+              textAlign: TextAlign.center,
+              textStyle: TextStyle(
+                fontStyle: FontStyle.normal,
+                fontSize: 25,
+                letterSpacing: 5,
+                color: Colors.white,
+              )),
+          showNavigationArrow: true,
+
+          // backgroundColor: Colors.red[100],
+          view: DateRangePickerView.decade,
+          selectionColor: color.primary,
           selectionMode: DateRangePickerSelectionMode.single,
           //     onSelectionChanged: selectionChanged,
-        )));
+        ));
   }
 
   _monthPickerSection() {
@@ -273,7 +289,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     return AlertDialog(
                         title: Text(''),
                         content: Container(
-                          height: 600,
+                          height: 360,
                           child: Column(
                             children: <Widget>[
                               getDateRangePicker(),

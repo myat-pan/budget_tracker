@@ -3,9 +3,11 @@
 import 'package:budget_tracker/src/modules/categories/controller/CategoriesController.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:budget_tracker/src/widgets/custom_loading.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimen;
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -44,6 +46,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     return DefaultTabController(
         length: 2,
         child: Scaffold(
+            resizeToAvoidBottomInset: true,
             appBar: PreferredSize(
                 preferredSize:
                     Size.fromHeight(MediaQuery.of(context).size.height),
@@ -143,9 +146,18 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                     itemBuilder: (context, i) {
                                       return ListTile(
                                         dense: true,
-                                        leading: Icon(
-                                          CustomIcons.dollar,
-                                          size: 18,
+                                        leading: SvgPicture.network(
+                                          controller.categories.value
+                                              .incomeCategories[i].iconImage,
+                                          width: 20,
+                                          height: 20,
+                                          placeholderBuilder: (BuildContext
+                                                  context) =>
+                                              Container(
+                                                  /*   padding: const EdgeInsets.all(
+                                                      30.0), */
+                                                  child:
+                                                      const CircularProgressIndicator()),
                                         ),
                                         title: Text(controller.categories.value
                                             .incomeCategories[i].name),
@@ -166,7 +178,31 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                             dimen.borderRadius)),
                                     elevation: 4,
                                     primary: color.expenseColor),
-                                onPressed: () {},
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              dimen.borderRadius)),
+                                      context: context,
+                                      builder: (context) {
+                                        return Container(
+                                            padding: EdgeInsets.all(16),
+                                            height: Get.height / 4,
+                                            child: Column(
+                                              children: [
+                                                TextFormField(
+                                                  decoration: InputDecoration(
+                                                      label: Text(
+                                                          "Category Name")),
+                                                ),
+                                                ElevatedButton(
+                                                    onPressed: () {},
+                                                    child: Text("Add"))
+                                              ],
+                                            ));
+                                      });
+                                },
                                 child: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   // ignore: prefer_const_literals_to_create_immutables
@@ -189,16 +225,47 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                               itemBuilder: (context, i) {
                                 return ListTile(
                                   dense: true,
-                                  leading: Icon(
+                                  leading: SvgPicture.network(
+                                    controller.categories.value
+                                        .expenseCategories[i].iconImage,
+                                    width: 20,
+                                    height: 20,
+                                    placeholderBuilder:
+                                        (BuildContext context) => Container(
+                                            padding: const EdgeInsets.all(30.0),
+                                            child:
+                                                const CircularProgressIndicator()),
+                                  ),
+                                  /*     CachedNetworkImage(
+                                    imageUrl: controller.categories.value
+                                        .expenseCategories[i].iconImage,
+                                    placeholder: (context, url) => Center(
+                                        child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset(
+                                      'assets/default-biker.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                    fit: BoxFit.cover,
+                                    width: 90,
+                                    height: 90,
+                                  ), */
+                                  /*   Icon(
                                     CustomIcons.dollar,
                                     size: 18,
-                                  ),
+                                  ), */
                                   title: Text(controller.categories.value
                                       .expenseCategories[i].name),
-                                  trailing: Icon(
-                                    Icons.close,
-                                    size: 18,
-                                  ),
+                                  trailing: controller.categories.value
+                                              .expenseCategories[i].isDefault ==
+                                          0
+                                      ? Icon(
+                                          Icons.close,
+                                          size: 18,
+                                        )
+                                      : Container(
+                                          width: 0,
+                                        ),
                                 );
                               },
                             ))

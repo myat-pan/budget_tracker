@@ -13,8 +13,8 @@ class CategoriesResult {
 
   CategoriesResult copyWith({
     bool status,
-    List<dynamic> incomeCategories,
-    List<dynamic> expenseCategories,
+    List<Categories> incomeCategories,
+    List<Categories> expenseCategories,
     String message,
   }) =>
       CategoriesResult(
