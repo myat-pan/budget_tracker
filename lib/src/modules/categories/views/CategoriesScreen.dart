@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:budget_tracker/src/modules/categories/controller/CategoriesController.dart';
+import 'package:budget_tracker/src/modules/login/components/text_form_field_widget.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:budget_tracker/src/widgets/custom_loading.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimen;
@@ -17,6 +17,8 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen>
     with TickerProviderStateMixin {
+  final TextEditingController _expenseTextController = TextEditingController();
+  final TextEditingController _incomeTextController = TextEditingController();
   var _initialIndex = 0;
   TabController tabController;
   final CategoriesController controller = Get.put(CategoriesController());
@@ -117,7 +119,26 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                                 dimen.borderRadius)),
                                         elevation: 4,
                                         primary: color.inComeColor),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Get.defaultDialog(
+                                        titlePadding: EdgeInsets.all(16),
+                                        contentPadding: EdgeInsets.all(16),
+                                        title: "Income Category",
+                                        confirm: Container(
+                                            width: Get.width / 1.5,
+                                            child: ElevatedButton(
+                                                onPressed: () {},
+                                                child: Text("Add"))),
+                                        content: TextFormFieldWidget(
+                                          controller: _incomeTextController,
+                                          icon: CustomIcons.th_thumb_empty,
+                                          labelText: "Category Name",
+                                          showSuffix: false,
+                                          obsecureText: false,
+                                          iconSize: 16,
+                                        ),
+                                      );
+                                    },
                                     child: Wrap(
                                       direction: Axis.horizontal,
                                       crossAxisAlignment:
@@ -179,7 +200,26 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                     elevation: 4,
                                     primary: color.expenseColor),
                                 onPressed: () {
-                                  showModalBottomSheet(
+                                  Get.defaultDialog(
+                                    titlePadding: EdgeInsets.all(16),
+                                    contentPadding: EdgeInsets.all(16),
+                                    title: "Expense Category",
+                                    confirm: Container(
+                                        width: Get.width / 1.5,
+                                        child: ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text("Add"))),
+                                    content: TextFormFieldWidget(
+                                      controller: _expenseTextController,
+                                      icon: CustomIcons.th_thumb_empty,
+                                      labelText: "Category Name",
+                                      showSuffix: false,
+                                      obsecureText: false,
+                                      iconSize: 16,
+                                    ),
+                                  );
+                                  /*  showModalBottomSheet( 
+                                      isScrollControlled: true,
                                       backgroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
@@ -187,21 +227,40 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                       context: context,
                                       builder: (context) {
                                         return Container(
-                                            padding: EdgeInsets.all(16),
-                                            height: Get.height / 4,
+                                            padding: MediaQuery.of(context)
+                                                .viewInsets,
+                                            height: Get.height / 3.5,
                                             child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                TextFormField(
-                                                  decoration: InputDecoration(
-                                                      label: Text(
-                                                          "Category Name")),
+                                                Text(
+                                                  "Expense Category",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                TextFormFieldWidget(
+                                                  controller:
+                                                      _expenseTextController,
+                                                  icon: CustomIcons
+                                                      .th_thumb_empty,
+                                                  labelText: "Category Name",
+                                                  showSuffix: false,
+                                                  obsecureText: true,
+                                                  iconSize: 16,
                                                 ),
                                                 ElevatedButton(
                                                     onPressed: () {},
                                                     child: Text("Add"))
                                               ],
                                             ));
-                                      });
+                                      }); */
                                 },
                                 child: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
