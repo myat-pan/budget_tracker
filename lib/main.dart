@@ -1,6 +1,7 @@
 import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:budget_tracker/src/modules/login/views/SplashScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blueGrey,
       ),
       home: SplashScreen(),
+      builder: EasyLoading.init(),
     );
   }
 }

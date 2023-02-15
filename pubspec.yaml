@@ -41,6 +41,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^18.4.49-beta
   cached_network_image: ^2.5.1
   flutter_svg: ^0.19.3
+  flutter_easyloading: ^3.0.5
 
 dev_dependencies:
   flutter_test:

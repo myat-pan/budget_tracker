@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:budget_tracker/src/modules/categories/controller/CategoriesController.dart';
+import 'package:budget_tracker/src/modules/categories/views/AddCategoryScreen.dart';
 import 'package:budget_tracker/src/modules/login/components/text_form_field_widget.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:budget_tracker/src/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimen;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -40,6 +42,8 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   @override
   void dispose() {
     tabController.dispose();
+    _expenseTextController.dispose();
+    _incomeTextController.dispose();
     super.dispose();
   }
 
@@ -120,14 +124,24 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                         elevation: 4,
                                         primary: color.inComeColor),
                                     onPressed: () {
-                                      Get.defaultDialog(
+                                      Get.to(AddCategoryScreen(
+                                        appBarTitle: "Income Category",
+                                        textController: _incomeTextController,
+                                        onPress: () {},
+                                        type: 1,
+                                      ));
+                                      /* Get.defaultDialog(
                                         titlePadding: EdgeInsets.all(16),
                                         contentPadding: EdgeInsets.all(16),
                                         title: "Income Category",
                                         confirm: Container(
                                             width: Get.width / 1.5,
                                             child: ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  EasyLoading.show(
+                                                      status: 'loading...');
+                                                },
                                                 child: Text("Add"))),
                                         content: TextFormFieldWidget(
                                           controller: _incomeTextController,
@@ -137,7 +151,9 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                           obsecureText: false,
                                           iconSize: 16,
                                         ),
-                                      );
+                                      ).then((value) {
+                                        _incomeTextController.clear();
+                                      }); */
                                     },
                                     child: Wrap(
                                       direction: Axis.horizontal,
@@ -182,6 +198,34 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                         ),
                                         title: Text(controller.categories.value
                                             .incomeCategories[i].name),
+                                        trailing: controller
+                                                    .categories
+                                                    .value
+                                                    .incomeCategories[i]
+                                                    .isDefault ==
+                                                0
+                                            ? IconButton(
+                                                onPressed: () async {
+                                                  await controller
+                                                      .deleteCategory(controller
+                                                          .categories
+                                                          .value
+                                                          .incomeCategories[i]
+                                                          .id);
+                                                  if (controller
+                                                      .result.value.status) {
+                                                    controller
+                                                        .fetchCategories();
+                                                  }
+                                                },
+                                                icon: Icon(
+                                                  Icons.close,
+                                                  size: 18,
+                                                  color: Colors.red,
+                                                ))
+                                            : Container(
+                                                width: 0,
+                                              ),
                                       );
                                     },
                                   ))
@@ -200,7 +244,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                     elevation: 4,
                                     primary: color.expenseColor),
                                 onPressed: () {
-                                  Get.defaultDialog(
+                                  /*  Get.defaultDialog(
                                     titlePadding: EdgeInsets.all(16),
                                     contentPadding: EdgeInsets.all(16),
                                     title: "Expense Category",
@@ -217,50 +261,14 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                       obsecureText: false,
                                       iconSize: 16,
                                     ),
-                                  );
-                                  /*  showModalBottomSheet( 
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              dimen.borderRadius)),
-                                      context: context,
-                                      builder: (context) {
-                                        return Container(
-                                            padding: MediaQuery.of(context)
-                                                .viewInsets,
-                                            height: Get.height / 3.5,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  "Expense Category",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                TextFormFieldWidget(
-                                                  controller:
-                                                      _expenseTextController,
-                                                  icon: CustomIcons
-                                                      .th_thumb_empty,
-                                                  labelText: "Category Name",
-                                                  showSuffix: false,
-                                                  obsecureText: true,
-                                                  iconSize: 16,
-                                                ),
-                                                ElevatedButton(
-                                                    onPressed: () {},
-                                                    child: Text("Add"))
-                                              ],
-                                            ));
-                                      }); */
+                                  ).then((value) {
+                                    _expenseTextController.clear();
+                                  }); */
+                                  Get.to(AddCategoryScreen(
+                                    appBarTitle: "Expense Category",
+                                    textController: _expenseTextController,
+                                    type: 2,
+                                  ));
                                 },
                                 child: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -318,10 +326,21 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                   trailing: controller.categories.value
                                               .expenseCategories[i].isDefault ==
                                           0
-                                      ? Icon(
-                                          Icons.close,
-                                          size: 18,
-                                        )
+                                      ? IconButton(
+                                          onPressed: () async {
+                                            await controller.deleteCategory(
+                                                controller.categories.value
+                                                    .expenseCategories[i].id);
+                                            if (controller
+                                                .result.value.status) {
+                                              controller.fetchCategories();
+                                            }
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            size: 18,
+                                            color: Colors.red,
+                                          ))
                                       : Container(
                                           width: 0,
                                         ),

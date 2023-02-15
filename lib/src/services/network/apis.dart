@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:budget_tracker/AppEnv.dart';
 import 'package:budget_tracker/src/modules/categories/models/categories.dart';
+import 'package:budget_tracker/src/modules/categories/models/categories_icon.dart';
 import 'package:budget_tracker/src/modules/login/models/login_result.dart';
 import 'package:budget_tracker/src/modules/login/models/result.dart';
 import 'package:budget_tracker/src/modules/profile/models/profile.dart';
@@ -131,6 +132,62 @@ class APIs {
               isDefault: list['is_default'],
               //  userId: list['user_id'],
             );
+          }).toList());
+    } else {}
+  }
+
+  static Future<Result> storeCategory(
+      String name, String iconImage, int type) async {
+    var _url = _serverUrl + "/categories";
+    var token = await storage.read(key: "token");
+    var res = await http.post(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    }, body: {
+      "name": name,
+      "type": type.toString(),
+      "icon_image": "fas fa-electronic",
+      "color": "#ff0000"
+    });
+    //  final result = json.decode(res.body);
+    if (res.statusCode == 201) {
+      return Result(status: true, message: "Success");
+    } else {
+      return Result(status: false, message: "Fail");
+    }
+  }
+
+  static Future<Result> deleteCategory(int id) async {
+    var _url = _serverUrl + "/categories/$id";
+    var token = await storage.read(key: "token");
+    var res = await http.delete(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    //  final result = json.decode(res.body);
+    if (res.statusCode == 204) {
+      return Result(status: true, message: "Success");
+    } else {
+      return Result(status: false, message: "Fail");
+    }
+  }
+
+  static Future<CategoriesIcon> getCategoryIcons() async {
+    var _url = _serverUrl + "/icons";
+    var token = await storage.read(key: "token");
+    var res = await http.delete(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+
+    if (res.statusCode == 200) {
+      final result = json.decode(res.body);
+      return CategoriesIcon(
+          status: result['status'],
+          total: result['total'],
+          message: result['message'],
+          data: result['data'].map<IconData>((list) {
+            return IconData(id: list['id'], image: list['image']);
           }).toList());
     } else {}
   }
