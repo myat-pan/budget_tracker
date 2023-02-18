@@ -146,7 +146,7 @@ class APIs {
     }, body: {
       "name": name,
       "type": type.toString(),
-      "icon_image": "fas fa-electronic",
+      "icon_image": iconImage,
       "color": "#ff0000"
     });
     //  final result = json.decode(res.body);
@@ -175,7 +175,7 @@ class APIs {
   static Future<CategoriesIcon> getCategoryIcons() async {
     var _url = _serverUrl + "/icons";
     var token = await storage.read(key: "token");
-    var res = await http.delete(Uri.parse(_url), headers: {
+    var res = await http.get(Uri.parse(_url), headers: {
       HttpHeaders.acceptHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
     });
@@ -186,8 +186,8 @@ class APIs {
           status: result['status'],
           total: result['total'],
           message: result['message'],
-          data: result['data'].map<IconData>((list) {
-            return IconData(id: list['id'], image: list['image']);
+          data: result['data'].map<IconsData>((list) {
+            return IconsData(id: list['id'], image: list['image']);
           }).toList());
     } else {}
   }

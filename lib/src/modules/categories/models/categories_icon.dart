@@ -8,13 +8,13 @@ class CategoriesIcon {
 
   bool status;
   int total;
-  List<IconData> data;
+  List<IconsData> data;
   String message;
 
   CategoriesIcon copyWith({
     bool status,
     int total,
-    List<IconData> data,
+    List<IconsData> data,
     String message,
   }) =>
       CategoriesIcon(
@@ -25,8 +25,8 @@ class CategoriesIcon {
       );
 }
 
-class IconData {
-  IconData({
+class IconsData {
+  IconsData({
     this.id,
     this.image,
     this.createdAt,
@@ -40,14 +40,14 @@ class IconData {
   String updatedAt;
   String deletedAt;
 
-  IconData copyWith({
+  IconsData copyWith({
     int id,
     String image,
     String createdAt,
     String updatedAt,
     String deletedAt,
   }) =>
-      IconData(
+      IconsData(
         id: id ?? this.id,
         image: image ?? this.image,
         createdAt: createdAt ?? this.createdAt,

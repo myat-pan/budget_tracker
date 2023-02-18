@@ -42,6 +42,7 @@ dependencies:
   cached_network_image: ^2.5.1
   flutter_svg: ^0.19.3
   flutter_easyloading: ^3.0.5
+  dropdown_button2: ^1.4.0
 
 dev_dependencies:
   flutter_test:
