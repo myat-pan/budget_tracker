@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
             icon: CustomIcons.mail,
             labelText: "Email",
             showSuffix: false,
-            obsecureText: true,
+            obsecureText: false,
             iconSize: 16,
           ),
           SizedBox(

@@ -2,11 +2,15 @@
 
 import 'dart:ui';
 
+import 'package:budget_tracker/src/modules/dashboard/controller/DashboardController.dart';
+import 'package:budget_tracker/src/modules/dashboard/models/store_budget.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
+import 'package:budget_tracker/src/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/format.dart' as format;
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -16,6 +20,16 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final DashboardController controller = Get.put(DashboardController());
+  var currentMonth = DateTime.now().month;
+  var currentYear = DateTime.now().year;
+
+  @override
+  void initState() {
+    controller.fetchDashboard(currentMonth, currentYear);
+    super.initState();
+  }
+
   _incomeAndexpenseWidget(
       {Color cardColor,
       String title,
@@ -67,7 +81,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               cardColor: color.inComeColor,
               title: "Income",
               icon: CustomIcons.move_to_inbox,
-              amount: 500000,
+              amount: controller.briefData.value.income,
               iconColor: color.inComeColor),
         ),
         Expanded(
@@ -76,24 +90,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
               cardColor: color.expenseColor,
               title: "Expense",
               icon: Icons.outbox,
-              amount: 50000,
+              amount: controller.briefData.value.expense,
               iconColor: color.expenseColor),
         ),
       ],
     );
   }
 
-  _dailyBudgetWidget() {
+  _dailyBudgetWidget(List<StoreBudgetData> data) {
     return Container(
       child: ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 2,
-          itemBuilder: (context, index) {
+          itemCount: data.length,
+          itemBuilder: (context, i) {
             return ListTile(
                 visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                leading: Icon(Icons.food_bank_outlined),
-                title: Text("food "),
+                leading: SvgPicture.network(
+                  data[i].category.iconImage,
+                  width: 50,
+                  height: 50,
+                  color: Colors.black,
+                ),
+                title: Text(data[i].category.name),
                 subtitle: Text(
                   "data",
                   style: TextStyle(color: color.subtitleColor),
@@ -102,7 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
-                        "-5000",
+                        data[i].amount.toString(),
                         style: TextStyle(color: color.expenseColor),
                       ),
                       IconButton(
@@ -122,8 +141,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 4,
-          itemBuilder: (context, index) {
+          itemCount: controller.budget.value.data.dailyCards.length,
+          itemBuilder: (context, i) {
             return ListView(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -136,15 +155,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "January 21",
+                            controller.budget.value.data.dailyCards[i].day,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Wrap(children: [
-                            Text("Income: 0"),
+                            Text(
+                                "Income: ${controller.budget.value.data.dailyCards[i].income}"),
                             SizedBox(
                               width: 6,
                             ),
-                            Text("Expense: 0"),
+                            Text(
+                                "Expense: 0${controller.budget.value.data.dailyCards[i].expense}"),
                           ]),
                         ]),
                   ),
@@ -152,13 +173,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: EdgeInsets.only(top: 6),
                     alignment: Alignment.center,
                     child: Text(
-                      "10% of your monthly Income was spent.",
+                      "${controller.budget.value.data.dailyCards[i].percentage}% of your monthly Income was spent.",
                       style: TextStyle(
                         color: color.messageColor,
                       ),
                     ),
                   ),
-                  _dailyBudgetWidget()
+                  _dailyBudgetWidget(
+                      controller.budget.value.data.dailyCards[i].items)
                 ]);
           }),
     );
@@ -328,72 +350,79 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(12),
-        child: ListView(
-          physics: BouncingScrollPhysics(),
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
+        body: Obx(
+      () => controller.isLoading.value
+          ? Center(child: CustomLoading())
+          : Container(
+              padding: EdgeInsets.all(12),
+              child: ListView(
+                physics: BouncingScrollPhysics(),
                 children: [
-                  Text(
-                    "Choose Month",
-                    style: TextStyle(color: color.messageColor, fontSize: 14),
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  _monthPickerSection(),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(18),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Total Balance",
-                    style: TextStyle(
-                      fontSize: 14,
+                  Container(
+                    alignment: Alignment.center,
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          "Choose Month",
+                          style: TextStyle(
+                              color: color.messageColor, fontSize: 14),
+                        ),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        _monthPickerSection(),
+                      ],
                     ),
                   ),
+                  Container(
+                    padding: EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Total Balance",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Icon(
+                              CustomIcons.dollar,
+                              size: 26,
+                            ),
+                            Text(
+                              format.numberFormat
+                                  .format(controller.briefData.value.netBudget)
+                                  .toString(),
+                              style: TextStyle(fontSize: 28),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          "You have spent ${controller.briefData.value.percentage}% of your income in Jan",
+                          style: TextStyle(
+                              color: color.expenseColor, fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                  _incomeAndexpanseSection(),
                   SizedBox(
-                    height: 4,
+                    height: 16,
                   ),
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Icon(
-                        CustomIcons.dollar,
-                        size: 26,
-                      ),
-                      Text(
-                        format.numberFormat.format(50000).toString(),
-                        style: TextStyle(fontSize: 28),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    "You have spent 50.0% of your income in Jan",
-                    style: TextStyle(color: color.expenseColor, fontSize: 14),
-                  ),
+                  _dailyBudgetSection(),
                 ],
               ),
             ),
-            _incomeAndexpanseSection(),
-            SizedBox(
-              height: 16,
-            ),
-            _dailyBudgetSection(),
-          ],
-        ),
-      ),
-    );
+    ));
   }
 }

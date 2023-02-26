@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _checkToken() async {
     token = await storage.read(key: "token");
-    if (token == "") {
+    if (token == "" || token == null) {
       Get.offAll(LoginScreen());
     } else {
       Get.offAll(HomeScreen());

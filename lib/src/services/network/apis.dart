@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:budget_tracker/AppEnv.dart';
 import 'package:budget_tracker/src/modules/categories/models/categories.dart';
 import 'package:budget_tracker/src/modules/categories/models/categories_icon.dart';
+import 'package:budget_tracker/src/modules/dashboard/models/budget.dart';
+import 'package:budget_tracker/src/modules/dashboard/models/store_budget.dart';
 import 'package:budget_tracker/src/modules/login/models/login_result.dart';
 import 'package:budget_tracker/src/modules/login/models/result.dart';
 import 'package:budget_tracker/src/modules/profile/models/profile.dart';
@@ -13,6 +14,11 @@ import 'package:http/http.dart' as http;
 class APIs {
   static final storage = FlutterSecureStorage();
   static final String _serverUrl = AppEnv.server_url;
+
+  static Future<String> getToken() async {
+    var token = await storage.read(key: "token");
+    return token;
+  }
 
   static Future<LoginResult> login({String email, String password}) async {
     final _url = _serverUrl + "/login";
@@ -45,9 +51,74 @@ class APIs {
     }
   }
 
+  static Future<Result> makeLogout() async {
+    var _url = _serverUrl + "/logout";
+    var token = await getToken();
+    var res = await http.post(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    //  final result = json.decode(res.body);
+    if (res.statusCode == 204) {
+      return Result(status: true, message: "Logout Successfully");
+    } else {
+      return Result(status: false, message: "Logout Fail");
+    }
+  }
+
+  static Future<Result> storeCategory(String name, int iconId, int type) async {
+    var _url = _serverUrl + "/categories";
+    var token = await getToken();
+    var res = await http.post(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    }, body: {
+      "name": name,
+      "type": type.toString(),
+      "icon_id": iconId.toString(),
+      // "icon_image": "",
+      "color": "#ff0000"
+    });
+    //  final result = json.decode(res.body);
+    if (res.statusCode == 201) {
+      return Result(status: true, message: "Success");
+    } else {
+      return Result(status: false, message: "Fail");
+    }
+  }
+
+  static Future<StoreBudget> storeBudget(
+      int categoryId, int type, int amount) async {
+    var _url = _serverUrl + "/budgets";
+    var token = await getToken();
+    var res = await http.post(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    }, body: {
+      "category_id": categoryId.toString(),
+      "type": type.toString(),
+      "amount": amount.toString(),
+    });
+
+    if (res.statusCode == 200) {
+      final result = json.decode(res.body);
+      return StoreBudget(
+          status: result['status'],
+          id: result['id'],
+          message: result['message'],
+          data: StoreBudgetData(
+            id: result['data']['id'],
+            type: result['data']['type'],
+            remark: result['data']['remark'],
+            amount: result['data']['amount'],
+            categoryId: result['data']['category_id'],
+          ));
+    }
+  }
+
   static Future<ProfileResult> fetchProfile() async {
     var _url = _serverUrl + "/profile";
-    var token = await storage.read(key: "token");
+    var token = await getToken();
     var res = await http.get(Uri.parse(_url), headers: {
       HttpHeaders.acceptHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
@@ -82,24 +153,9 @@ class APIs {
     }
   }
 
-  static Future<Result> makeLogout() async {
-    var _url = _serverUrl + "/logout";
-    var token = await storage.read(key: "token");
-    var res = await http.post(Uri.parse(_url), headers: {
-      HttpHeaders.acceptHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $token"
-    });
-    //  final result = json.decode(res.body);
-    if (res.statusCode == 204) {
-      return Result(status: true, message: "Logout Successfully");
-    } else {
-      return Result(status: false, message: "Logout Fail");
-    }
-  }
-
   static Future<CategoriesResult> fetchCategories() async {
     var _url = _serverUrl + "/categories";
-    var token = await storage.read(key: "token");
+    var token = await getToken();
     var res = await http.get(Uri.parse(_url), headers: {
       HttpHeaders.acceptHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
@@ -133,48 +189,14 @@ class APIs {
               //  userId: list['user_id'],
             );
           }).toList());
-    } else {}
-  }
-
-  static Future<Result> storeCategory(
-      String name, String iconImage, int type) async {
-    var _url = _serverUrl + "/categories";
-    var token = await storage.read(key: "token");
-    var res = await http.post(Uri.parse(_url), headers: {
-      HttpHeaders.acceptHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $token"
-    }, body: {
-      "name": name,
-      "type": type.toString(),
-      "icon_image": iconImage,
-      "color": "#ff0000"
-    });
-    //  final result = json.decode(res.body);
-    if (res.statusCode == 201) {
-      return Result(status: true, message: "Success");
-    } else {
-      return Result(status: false, message: "Fail");
-    }
-  }
-
-  static Future<Result> deleteCategory(int id) async {
-    var _url = _serverUrl + "/categories/$id";
-    var token = await storage.read(key: "token");
-    var res = await http.delete(Uri.parse(_url), headers: {
-      HttpHeaders.acceptHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $token"
-    });
-    //  final result = json.decode(res.body);
-    if (res.statusCode == 204) {
-      return Result(status: true, message: "Success");
-    } else {
-      return Result(status: false, message: "Fail");
+    } else if (res.statusCode == 401) {
+      makeLogout();
     }
   }
 
   static Future<CategoriesIcon> getCategoryIcons() async {
     var _url = _serverUrl + "/icons";
-    var token = await storage.read(key: "token");
+    var token = await getToken();
     var res = await http.get(Uri.parse(_url), headers: {
       HttpHeaders.acceptHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
@@ -190,5 +212,95 @@ class APIs {
             return IconsData(id: list['id'], image: list['image']);
           }).toList());
     } else {}
+  }
+
+  static Future<Budget> getBudget(int month, int year) async {
+    var _url = _serverUrl + "/budgets?month=$month&year=$year";
+    var token = await getToken();
+    var res = await http.get(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+
+    if (res.statusCode == 200) {
+      final result = json.decode(res.body);
+
+      return Budget(
+          status: result['status'],
+          message: result['message'],
+          data: BudgetData(
+              dailyCards: result['data']['daily_cards'].map<DailyCard>((list) {
+            return DailyCard(
+              day: list['day'],
+              income: list['income'],
+              expense: list['expense'],
+              netBudget: list['net_budget'],
+              percentage: list['percentage'],
+              items: list['items'].map<StoreBudgetData>((item) {
+                return StoreBudgetData(
+                    id: item['id'],
+                    type: item['type'],
+                    remark: item['remark'],
+                    amount: item['amount'],
+                    categoryId: item['category_id'],
+                    category: Category(
+                      id: item['category']['id'],
+                      name: item['category']['name'],
+                      type: item['category']['type'],
+                      color: item['category']['color'],
+                      iconImage: item['category']['icon_image'],
+                      isDefault: item['category']['is_default'],
+                    ));
+              }).toList(),
+            );
+          }).toList()));
+    }
+  }
+
+  static Future<DailyCard> getBudgetBrief() async {
+    var _url = _serverUrl + "/budgets/brief";
+    var token = await getToken();
+    var res = await http.get(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    if (res.statusCode == 200) {
+      final result = json.decode(res.body);
+      return DailyCard(
+          income: result['income'],
+          expense: result['expense'],
+          netBudget: result['netBudget'],
+          percentage: result['percentage']);
+    }
+  }
+
+  static Future<Result> deleteCategory(int id) async {
+    var _url = _serverUrl + "/categories/$id";
+    var token = await getToken();
+    var res = await http.delete(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    //  final result = json.decode(res.body);
+    if (res.statusCode == 204) {
+      return Result(status: true, message: "Success");
+    } else {
+      return Result(status: false, message: "Fail");
+    }
+  }
+
+  static Future<Result> deleteBudget(int id) async {
+    var _url = _serverUrl + "/budgets/$id";
+    var token = await getToken();
+    var res = await http.delete(Uri.parse(_url), headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    });
+    //  final result = json.decode(res.body);
+    if (res.statusCode == 204) {
+      return Result(status: true, message: "Success");
+    } else {
+      return Result(status: false, message: "Fail");
+    }
   }
 }

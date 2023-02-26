@@ -40,6 +40,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   ];
 
   String iconImage = "";
+  int iconId = 0;
   @override
   void initState() {
     WidgetsBinding.instance.scheduleFrameCallback((timeStamp) {
@@ -90,7 +91,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                           icons: controller.categoryIcons.value,
                         )).then((value) {
                           setState(() {
-                            iconImage = value;
+                            iconImage = value[0];
+                            iconId = value[1];
                           });
                         });
                       },
@@ -198,12 +200,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                     child: ElevatedButton(
                         onPressed: () async {
                           await controller.makeStoreCategory(
-                              widget.textController.text,
-                              iconImage,
-                              widget.type);
+                              widget.textController.text, iconId, widget.type);
                           if (controller.result.value.status == true) {
                             setState(() {
                               iconImage = "";
+                              iconId = 0;
                             });
 
                             EasyLoading.showSuccess(

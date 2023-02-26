@@ -23,11 +23,10 @@ class CategoriesController extends GetxController {
     }
   }
 
-  Future<bool> makeStoreCategory(
-      String name, String iconImage, int type) async {
+  Future<bool> makeStoreCategory(String name, int iconId, int type) async {
     try {
       isLoading(true);
-      final res = await APIs.storeCategory(name, iconImage, type);
+      final res = await APIs.storeCategory(name, iconId, type);
       if (res.status) {
         result(res);
       }

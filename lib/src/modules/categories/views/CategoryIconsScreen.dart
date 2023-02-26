@@ -26,7 +26,8 @@ class CategoryIconsScreen extends StatelessWidget {
             itemBuilder: (context, index) => Card(
                 child: InkWell(
                     onTap: () {
-                      Navigator.pop(context, icons.data[index].image);
+                      Navigator.pop(context,
+                          [icons.data[index].image, icons.data[index].id]);
                     },
                     child: Container(
                       padding: EdgeInsets.all(6),

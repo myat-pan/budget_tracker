@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:budget_tracker/src/modules/categories/views/CategoriesScreen.dart';
+import 'package:budget_tracker/src/modules/dashboard/views/AddBudgetScreen.dart';
 import 'package:budget_tracker/src/modules/dashboard/views/DashboardScreen.dart';
 import 'package:budget_tracker/src/modules/profile/views/ProfileScreen.dart';
 import 'package:budget_tracker/src/modules/login/views/RegisterScreen.dart';
@@ -138,7 +139,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Expanded(
                                     flex: 1,
                                     child: GestureDetector(
-                                        onTap: (() {}),
+                                        onTap: (() {
+                                          Get.to(AddBudgetScreen(
+                                            title: "Add Income",
+                                          ));
+                                        }),
                                         child: Wrap(
                                           alignment: WrapAlignment.center,
                                           crossAxisAlignment:
@@ -157,7 +162,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Expanded(
                                     flex: 1,
                                     child: GestureDetector(
-                                        onTap: (() {}),
+                                        onTap: (() {
+                                          Get.to(AddBudgetScreen(
+                                            title: "Add Expense",
+                                          ));
+                                        }),
                                         child: Wrap(
                                           runAlignment: WrapAlignment.center,
                                           alignment: WrapAlignment.center,
