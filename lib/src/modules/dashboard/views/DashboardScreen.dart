@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:ui';
-
 import 'package:budget_tracker/src/modules/dashboard/controller/DashboardController.dart';
 import 'package:budget_tracker/src/modules/dashboard/models/store_budget.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
@@ -12,6 +10,7 @@ import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -62,10 +61,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               size: 20,
               color: Colors.white,
             ), */
-            Text(
-              format.numberFormat.format(amount).toString(),
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
+            Container(
+              child: amount != null
+                  ? Text(
+                      format.numberFormat.format(amount).toString(),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    )
+                  : Text(
+                      "0",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+            )
           ],
         ),
       ),
@@ -114,7 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 title: Text(data[i].category.name),
                 subtitle: Text(
-                  "data",
+                  data[i].category.type,
                   style: TextStyle(color: color.subtitleColor),
                 ),
                 trailing: Wrap(
@@ -122,7 +129,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     children: [
                       Text(
                         data[i].amount.toString(),
-                        style: TextStyle(color: color.expenseColor),
+                        style: TextStyle(
+                            color: data[i].type == "income"
+                                ? color.inComeColor
+                                : color.expenseColor),
                       ),
                       IconButton(
                           onPressed: () {},
@@ -137,53 +147,60 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   _dailyBudgetSection() {
-    return Container(
-      child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: controller.budget.value.data.dailyCards.length,
-          itemBuilder: (context, i) {
-            return ListView(
+    return controller.budget.value.data.dailyCards.isEmpty
+        ? Center(
+            child: Container(
+              child: Text("No Budget"),
+            ),
+          )
+        : Container(
+            child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    alignment: Alignment.center,
-                    color: Colors.grey[300],
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            controller.budget.value.data.dailyCards[i].day,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Wrap(children: [
-                            Text(
-                                "Income: ${controller.budget.value.data.dailyCards[i].income}"),
-                            SizedBox(
-                              width: 6,
+                itemCount: controller.budget.value.data.dailyCards.length,
+                itemBuilder: (context, i) {
+                  return ListView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          alignment: Alignment.center,
+                          color: Colors.grey[300],
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  controller
+                                      .budget.value.data.dailyCards[i].day,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Wrap(children: [
+                                  Text(
+                                      "Income: ${controller.budget.value.data.dailyCards[i].income}"),
+                                  SizedBox(
+                                    width: 6,
+                                  ),
+                                  Text(
+                                      "Expense: ${controller.budget.value.data.dailyCards[i].expense}"),
+                                ]),
+                              ]),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 6),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${controller.budget.value.data.dailyCards[i].percentage}% of your monthly Income was spent.",
+                            style: TextStyle(
+                              color: color.messageColor,
                             ),
-                            Text(
-                                "Expense: 0${controller.budget.value.data.dailyCards[i].expense}"),
-                          ]),
-                        ]),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 6),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "${controller.budget.value.data.dailyCards[i].percentage}% of your monthly Income was spent.",
-                      style: TextStyle(
-                        color: color.messageColor,
-                      ),
-                    ),
-                  ),
-                  _dailyBudgetWidget(
-                      controller.budget.value.data.dailyCards[i].items)
-                ]);
-          }),
-    );
+                          ),
+                        ),
+                        _dailyBudgetWidget(
+                            controller.budget.value.data.dailyCards[i].items)
+                      ]);
+                }),
+          );
   }
 
   _datePickerSection(BuildContext context) {
@@ -337,7 +354,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   width: 4,
                 ),
                 Text(
-                  "Feb 2023",
+                  controller.convertNumToMonthName(currentMonth) +
+                      " , " +
+                      currentYear.toString(),
                   style: TextStyle(
                     fontSize: 14,
                     color: color.messageColor,
@@ -396,19 +415,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               CustomIcons.dollar,
                               size: 26,
                             ),
-                            Text(
-                              format.numberFormat
-                                  .format(controller.briefData.value.netBudget)
-                                  .toString(),
-                              style: TextStyle(fontSize: 28),
-                            ),
+                            controller.briefData.value.netBudget != null
+                                ? Text(
+                                    format.numberFormat
+                                        .format(controller
+                                            .briefData.value.netBudget)
+                                        .toString(),
+                                    style: TextStyle(fontSize: 28),
+                                  )
+                                : Text(
+                                    "0",
+                                    style: TextStyle(fontSize: 28),
+                                  ),
                           ],
                         ),
                         SizedBox(
                           height: 4,
                         ),
                         Text(
-                          "You have spent ${controller.briefData.value.percentage}% of your income in Jan",
+                          controller.briefData.value.percentage != null
+                              ? "You have spent ${controller.briefData.value.percentage}% of your income in ${controller.convertNumToMonthName(currentMonth)}"
+                              : "You have spent 0% of your income in ${controller.convertNumToMonthName(currentMonth)}",
                           style: TextStyle(
                               color: color.expenseColor, fontSize: 14),
                         ),

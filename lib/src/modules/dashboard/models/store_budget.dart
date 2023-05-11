@@ -42,7 +42,7 @@ class StoreBudgetData {
   int id;
   String type;
   dynamic remark;
-  int amount;
+  String amount;
   int categoryId;
   int userId;
   DateTime createdAt;
@@ -54,7 +54,7 @@ class StoreBudgetData {
     int id,
     String type,
     dynamic remark,
-    int amount,
+    String amount,
     int categoryId,
     int userId,
     DateTime createdAt,

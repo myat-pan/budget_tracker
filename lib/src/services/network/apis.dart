@@ -7,8 +7,10 @@ import 'package:budget_tracker/src/modules/dashboard/models/budget.dart';
 import 'package:budget_tracker/src/modules/dashboard/models/store_budget.dart';
 import 'package:budget_tracker/src/modules/login/models/login_result.dart';
 import 'package:budget_tracker/src/modules/login/models/result.dart';
+import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:budget_tracker/src/modules/profile/models/profile.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class APIs {
@@ -100,7 +102,7 @@ class APIs {
       "amount": amount.toString(),
     });
 
-    if (res.statusCode == 200) {
+    if (res.statusCode == 201) {
       final result = json.decode(res.body);
       return StoreBudget(
           status: result['status'],
@@ -110,7 +112,7 @@ class APIs {
             id: result['data']['id'],
             type: result['data']['type'],
             remark: result['data']['remark'],
-            amount: result['data']['amount'],
+            amount: result['data']['amount'].toDouble(),
             categoryId: result['data']['category_id'],
           ));
     }
@@ -241,7 +243,7 @@ class APIs {
                     id: item['id'],
                     type: item['type'],
                     remark: item['remark'],
-                    amount: item['amount'],
+                    amount: item['amount'].toString(),
                     categoryId: item['category_id'],
                     category: Category(
                       id: item['category']['id'],
@@ -254,6 +256,8 @@ class APIs {
               }).toList(),
             );
           }).toList()));
+    } else {
+      Get.offAll(LoginScreen());
     }
   }
 
@@ -267,10 +271,10 @@ class APIs {
     if (res.statusCode == 200) {
       final result = json.decode(res.body);
       return DailyCard(
-          income: result['income'],
-          expense: result['expense'],
-          netBudget: result['netBudget'],
-          percentage: result['percentage']);
+          income: result['data']['income'],
+          expense: result['data']['expense'],
+          netBudget: result['data']['net_budget'],
+          percentage: result['data']['percentage']);
     }
   }
 

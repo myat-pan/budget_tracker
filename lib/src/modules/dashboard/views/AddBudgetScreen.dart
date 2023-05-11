@@ -4,10 +4,13 @@ import 'package:get/get.dart';
 import 'package:budget_tracker/src/res/styles.dart' as style;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
 
+import '../../../widgets/custom_icons.dart';
+
 class AddBudgetScreen extends StatefulWidget {
   final String title;
+  final int type;
 
-  const AddBudgetScreen({Key key, this.title}) : super(key: key);
+  const AddBudgetScreen({Key key, this.title, this.type}) : super(key: key);
   @override
   State<AddBudgetScreen> createState() => _AddBudgetScreenState();
 }
@@ -15,6 +18,7 @@ class AddBudgetScreen extends StatefulWidget {
 class _AddBudgetScreenState extends State<AddBudgetScreen> {
   final StoreBudgetController controller = Get.put(StoreBudgetController());
   final TextEditingController remarkTextController = TextEditingController();
+  final TextEditingController amountTextController = TextEditingController();
   _datePickerSection() {
     return Container(
       child: ListTile(
@@ -66,15 +70,48 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
 
   _amountSection() {
     return ListTile(
-      title: Text("Amount"),
-      subtitle: Text("Input"),
-    );
+        title: Wrap(
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            const Icon(
+              CustomIcons.dollar,
+              size: 16,
+            ),
+            Text("Amount"),
+          ],
+        ),
+        subtitle: Container(
+            margin: EdgeInsets.only(top: 16),
+            padding: EdgeInsets.only(left: 8, right: 8),
+            height: dimens.textFieldHeight,
+            decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius:
+                    BorderRadius.circular(dimens.textFieldBorderRadius)),
+            child: TextFormField(
+              controller: amountTextController,
+              decoration: InputDecoration(
+                  fillColor: Colors.grey[300],
+                  // prefixIcon: Icon(
+                  //   widget.icon,
+                  //   size: widget.iconSize.toDouble(),
+                  //   color: Colors.black.withOpacity(0.7),
+                  // ),
+
+                  labelText: "Amount",
+                  border: InputBorder.none
+                  // border: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(10),
+                  // )
+                  ),
+            )));
   }
 
   _buttonSection() {
     return ElevatedButton(
         onPressed: () async {
-          controller.addBudget(1, 1, 10000);
+          controller.addBudget(
+              1, widget.type, int.parse(amountTextController.text));
         },
         child: Text("Add"));
   }

@@ -2,13 +2,11 @@
 
 import 'package:budget_tracker/src/modules/categories/controller/CategoriesController.dart';
 import 'package:budget_tracker/src/modules/categories/views/AddCategoryScreen.dart';
-import 'package:budget_tracker/src/modules/login/components/text_form_field_widget.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:budget_tracker/src/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimen;
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 

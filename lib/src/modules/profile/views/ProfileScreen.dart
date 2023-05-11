@@ -9,6 +9,8 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -56,10 +58,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         subtitle: Text("myatpan.213@gmail.com"),
         trailing: IconButton(
             onPressed: () async {
-              await controller.makeLogout();
-              if (controller.result.value.status == true) {
-                Get.offAll(LoginScreen());
-              }
+              EasyLoading.show(status: "loading...").then((value) async {
+                await controller.makeLogout();
+                if (controller.result.value.status == true) {
+                  EasyLoading.dismiss();
+                  controller.logginOut();
+                }
+              });
             },
             icon: Icon(
               CustomIcons.logout_1,

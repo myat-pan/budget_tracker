@@ -6,6 +6,7 @@ import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
 
@@ -55,15 +56,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius:
                               BorderRadius.circular(dimens.borderRadius))),
                   onPressed: () async {
-                    await controller.makeLogin(
-                        _emailController.text, _passwordController.text);
-                    if (controller.loginResult.value.status == true) {
-                      Get.offAll(HomeScreen(), transition: Transition.downToUp);
-                    } else {
-                      Get.defaultDialog(
-                          title: "Login Fail",
-                          content: Text(controller.loginResult.value.message));
-                    }
+                    EasyLoading.show(status: 'loading...').then((value) async {
+                      await controller.makeLogin(
+                          _emailController.text, _passwordController.text);
+                      if (controller.loginResult.value.status == true) {
+                        EasyLoading.dismiss();
+                        Get.offAll(HomeScreen(),
+                            transition: Transition.downToUp);
+                      } else {
+                        EasyLoading.dismiss();
+                        Get.defaultDialog(
+                            title: "Login Fail",
+                            content:
+                                Text(controller.loginResult.value.message));
+                      }
+                    });
                   },
                   child: Text("Sign In"))),
           SizedBox(
