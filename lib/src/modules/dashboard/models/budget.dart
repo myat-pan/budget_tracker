@@ -51,7 +51,7 @@ class DailyCard {
   String day;
   int income;
   int expense;
-  int netBudget;
+  String netBudget;
   String percentage;
   List<StoreBudgetData> items;
 

@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 class CategoriesController extends GetxController {
   var isLoading = true.obs;
   var categories = CategoriesResult().obs;
+  var incomeCat = [].obs;
+  var expenseCat = [].obs;
   var result = Result().obs;
   var categoryIcons = CategoriesIcon().obs;
 
@@ -15,6 +17,8 @@ class CategoriesController extends GetxController {
       isLoading(true);
       final res = await APIs.fetchCategories();
       if (res.status) {
+        incomeCat(res.incomeCategories);
+        expenseCat(res.expenseCategories);
         categories(res);
       }
     } finally {

@@ -23,10 +23,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController();
   // Default Radio Button Selected Item When App Starts.
   String radioButtonItem = 'ONE';
-  final _passwordVisible = false;
 
   // Group Value for Radio Button.
   int id = 1;
+  var _passwordVisible;
+
+  @override
+  void initState() {
+    setState(() {
+      _passwordVisible = true;
+    });
+
+    super.initState();
+  }
 
   _textfieldSection() {
     return Container(
@@ -71,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             controller: _retypePasswordController,
             icon: CupertinoIcons.lock,
             iconSize: 20,
-            labelText: "Password",
+            labelText: "Retype Password",
             showSuffix: true,
             obsecureText: _passwordVisible,
           ),

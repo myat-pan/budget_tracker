@@ -28,16 +28,16 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   final CategoriesController controller = Get.put(CategoriesController());
   String selectedValue;
 
-  final List<String> items = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-    'Item5',
-    'Item6',
-    'Item7',
-    'Item8',
-  ];
+  // final List<String> items = [
+  //   'Item1',
+  //   'Item2',
+  //   'Item3',
+  //   'Item4',
+  //   'Item5',
+  //   'Item6',
+  //   'Item7',
+  //   'Item8',
+  // ];
 
   String iconImage = "";
   int iconId = 0;
@@ -215,7 +215,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                             });
                           } else {
                             EasyLoading.showError(
-                                controller.result.value.message);
+                                controller.result.value.message,
+                                dismissOnTap: true);
                           }
                         },
                         child: Text("Add")))

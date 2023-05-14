@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/format.dart' as format;
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -135,7 +135,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 : color.expenseColor),
                       ),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            EasyLoading.show(status: "deleting...")
+                                .then((value) async {
+                              await controller.deleteBudget(data[i].id);
+                              if (controller.result.value.status == true) {
+                                EasyLoading.dismiss();
+                                controller.fetchDashboard(
+                                    currentMonth, currentYear);
+                              } else {
+                                EasyLoading.showError(
+                                    controller.result.value.message,
+                                    dismissOnTap: true);
+                              }
+                            });
+                          },
                           visualDensity: VisualDensity(horizontal: -4),
                           icon: Icon(
                             Icons.close,
@@ -417,10 +431,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             controller.briefData.value.netBudget != null
                                 ? Text(
-                                    format.numberFormat
-                                        .format(controller
-                                            .briefData.value.netBudget)
-                                        .toString(),
+                                    // format.numberFormat
+                                    //     .format(
+                                    controller.briefData.value.netBudget,
+                                    //     )
+                                    // .toString(),
                                     style: TextStyle(fontSize: 28),
                                   )
                                 : Text(

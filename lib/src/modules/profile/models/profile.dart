@@ -53,14 +53,14 @@ class Brief {
   int income;
   int expense;
   int netBudget;
-  int percentage;
+  String percentage;
 
   Brief copyWith({
     int year,
     int income,
     int expense,
     int netBudget,
-    int percentage,
+    String percentage,
   }) =>
       Brief(
         year: year ?? this.year,

@@ -19,7 +19,16 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final LoginController controller = Get.put(LoginController());
-  final _passwordVisible = false;
+  var _passwordVisible;
+
+  @override
+  void initState() {
+    setState(() {
+      _passwordVisible = true;
+    });
+
+    super.initState();
+  }
 
   _loginSection() {
     return Container(
@@ -67,8 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         EasyLoading.dismiss();
                         Get.defaultDialog(
                             title: "Login Fail",
-                            content:
-                                Text(controller.loginResult.value.message));
+                            content: Text(controller.result.value.message));
                       }
                     });
                   },

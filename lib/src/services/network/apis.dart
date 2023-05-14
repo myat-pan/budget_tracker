@@ -53,6 +53,45 @@ class APIs {
     }
   }
 
+  static Future<LoginResult> register(
+      {String name,
+      String email,
+      String password,
+      String retypePassword,
+      int gender}) async {
+    final _url = _serverUrl + "/register";
+    final res = await http.post(Uri.parse(_url), body: {
+      'name': name.toString(),
+      'email': email.trim(),
+      "password": password.trim(),
+      "retype_password": retypePassword.trim(),
+      "gender": gender.toString(),
+    }, headers: {
+      // HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.acceptHeader: "application/json",
+    });
+    final result = json.decode(res.body);
+    if (res.statusCode == 200) {
+      final data = result['data'];
+      storage.write(value: result['token'], key: 'token');
+      return LoginResult(
+          status: result['status'],
+          message: result['message'],
+          token: result['token'],
+          data: LoginData(
+            id: data['id'],
+            name: data['name'],
+            email: data['email'],
+            gender: data['gender'],
+            image: data['image'],
+          ));
+    } else if (res.statusCode == 401) {
+      return LoginResult(status: false, message: result['message'], token: "");
+    } else {
+      return LoginResult(status: false, message: result['message'], token: "");
+    }
+  }
+
   static Future<Result> makeLogout() async {
     var _url = _serverUrl + "/logout";
     var token = await getToken();
@@ -112,8 +151,8 @@ class APIs {
             id: result['data']['id'],
             type: result['data']['type'],
             remark: result['data']['remark'],
-            amount: result['data']['amount'].toDouble(),
-            categoryId: result['data']['category_id'],
+            amount: result['data']['amount'].toString(),
+            categoryId: int.parse(result['data']['category_id']),
           ));
     }
   }
@@ -138,13 +177,13 @@ class APIs {
                 income: list['brief']['income'],
                 expense: list['brief']['expense'],
                 netBudget: list['brief']['net_budget'],
-                percentage: list['brief']['percentage']),
+                percentage: list['brief']['percentage'].toString()),
             monthlyResults: list['monthlyResults'].map<MonthlyResult>((items) {
               return MonthlyResult(
-                month: items['monthlyResults']['month'],
-                income: items['monthlyResults']['income'],
-                expense: items['monthlyResults']['expense'],
-                netBudget: items['monthlyResults']['netBudget'],
+                month: items['month'],
+                income: items['income'],
+                expense: items['expense'],
+                netBudget: items['net_budget'],
               );
             }).toList(),
           );
@@ -236,8 +275,8 @@ class APIs {
               day: list['day'],
               income: list['income'],
               expense: list['expense'],
-              netBudget: list['net_budget'],
-              percentage: list['percentage'],
+              netBudget: list['net_budget'].toString(),
+              percentage: list['percentage'].toString(),
               items: list['items'].map<StoreBudgetData>((item) {
                 return StoreBudgetData(
                     id: item['id'],
@@ -273,8 +312,8 @@ class APIs {
       return DailyCard(
           income: result['data']['income'],
           expense: result['data']['expense'],
-          netBudget: result['data']['net_budget'],
-          percentage: result['data']['percentage']);
+          netBudget: result['data']['net_budget'].toString(),
+          percentage: result['data']['percentage'].toString());
     }
   }
 

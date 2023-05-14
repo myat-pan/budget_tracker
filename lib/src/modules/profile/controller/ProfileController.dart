@@ -10,12 +10,20 @@ class ProfileController extends GetxController {
   var profile = ProfileResult().obs;
   var result = Result().obs;
   final storage = FlutterSecureStorage();
+  var name = "".obs;
+  var email = "".obs;
+
+  getUserInfo() async {
+    name.value = await storage.read(key: "name");
+    email.value = await storage.read(key: "email");
+  }
 
   Future<bool> fetchProfile() async {
     try {
       isLoading(true);
       final result = await APIs.fetchProfile();
       if (result.status) {
+        getUserInfo();
         profile(result);
       }
     } finally {

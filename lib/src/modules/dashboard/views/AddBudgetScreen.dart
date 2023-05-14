@@ -1,5 +1,11 @@
+import 'package:budget_tracker/src/modules/categories/controller/CategoriesController.dart';
+import 'package:budget_tracker/src/modules/categories/models/categories.dart';
 import 'package:budget_tracker/src/modules/dashboard/controller/StoreBudgetController.dart';
+import 'package:budget_tracker/src/modules/home/views/HomeScreen.dart';
+import 'package:budget_tracker/src/widgets/custom_loading.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:budget_tracker/src/res/styles.dart' as style;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
@@ -17,8 +23,29 @@ class AddBudgetScreen extends StatefulWidget {
 
 class _AddBudgetScreenState extends State<AddBudgetScreen> {
   final StoreBudgetController controller = Get.put(StoreBudgetController());
+  final CategoriesController categoriesController =
+      Get.put(CategoriesController());
   final TextEditingController remarkTextController = TextEditingController();
   final TextEditingController amountTextController = TextEditingController();
+  // final List<String> items = [
+  //   'Item1',
+  //   'Item2',
+  //   'Item3',
+  //   'Item4',
+  // ];
+  String incomeValue;
+  String expenseValue;
+
+  _getCat() async {
+    await categoriesController.fetchCategories();
+  }
+
+  @override
+  void initState() {
+    _getCat();
+    super.initState();
+  }
+
   _datePickerSection() {
     return Container(
       child: ListTile(
@@ -28,10 +55,82 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
     );
   }
 
+  _dropDownSection() {
+    if (widget.type == 1) {
+      return DropdownButton2(
+        hint: Text(
+          'Select Category',
+          style: TextStyle(
+            fontSize: 14,
+            color: Theme.of(context).hintColor,
+          ),
+        ),
+        items: categoriesController.incomeCat
+            .map((item) => DropdownMenuItem<Categories>(
+                  value: item,
+                  child: Text(
+                    item.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ))
+            .toList(),
+        value: incomeValue,
+        onChanged: (value) {
+          setState(() {
+            incomeValue = value.name;
+          });
+        },
+        buttonStyleData: const ButtonStyleData(
+          height: 40,
+          width: 140,
+        ),
+        menuItemStyleData: const MenuItemStyleData(
+          height: 40,
+        ),
+      );
+    } else {
+      return DropdownButton2(
+        hint: Text(
+          'Select Category',
+          style: TextStyle(
+            fontSize: 14,
+            color: Theme.of(context).hintColor,
+          ),
+        ),
+        items: categoriesController.expenseCat
+            .map((item) => DropdownMenuItem<Categories>(
+                  value: item,
+                  child: Text(
+                    item.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ))
+            .toList(),
+        value: expenseValue,
+        onChanged: (value) {
+          setState(() {
+            expenseValue = value.name as String;
+          });
+        },
+        buttonStyleData: const ButtonStyleData(
+          height: 40,
+          width: 140,
+        ),
+        menuItemStyleData: const MenuItemStyleData(
+          height: 40,
+        ),
+      );
+    }
+  }
+
   _categorySection() {
     return ListTile(
       title: Text("Category"),
-      subtitle: Text("dropdown"),
+      subtitle: DropdownButtonHideUnderline(child: _dropDownSection()),
     );
   }
 
@@ -110,8 +209,17 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   _buttonSection() {
     return ElevatedButton(
         onPressed: () async {
-          controller.addBudget(
-              1, widget.type, int.parse(amountTextController.text));
+          EasyLoading.show(status: "Adding...").then((value) async {
+            await controller.addBudget(
+                1, widget.type, int.parse(amountTextController.text));
+            if (controller.storeBudget.value.status == true) {
+              EasyLoading.dismiss();
+              Get.offAll(HomeScreen());
+            } else {
+              EasyLoading.showError(controller.storeBudget.value.message,
+                  dismissOnTap: true);
+            }
+          });
         },
         child: Text("Add"));
   }
@@ -119,32 +227,35 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
-          widget.title,
-          style: style.appBarStyle,
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.black),
+          title: Text(
+            widget.title,
+            style: style.appBarStyle,
+          ),
         ),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(12),
-        child: ListView(
-          children: [
-            _datePickerSection(),
-            Divider(),
-            _categorySection(),
-            Divider(),
-            _remarkSection(),
-            Divider(),
-            _amountSection(),
-            Divider(),
-            _buttonSection()
-          ],
-        ),
-      ),
-    );
+        body: Obx(
+          () => categoriesController.isLoading.value
+              ? Center(child: CustomLoading())
+              : Container(
+                  padding: EdgeInsets.all(12),
+                  child: ListView(
+                    children: [
+                      _datePickerSection(),
+                      Divider(),
+                      _categorySection(),
+                      Divider(),
+                      _remarkSection(),
+                      Divider(),
+                      _amountSection(),
+                      Divider(),
+                      _buttonSection()
+                    ],
+                  ),
+                ),
+        ));
   }
 }
