@@ -17,8 +17,14 @@ class CategoriesController extends GetxController {
       isLoading(true);
       final res = await APIs.fetchCategories();
       if (res.status) {
-        incomeCat(res.incomeCategories);
-        expenseCat(res.expenseCategories);
+        incomeCat(res.incomeCategories
+            .where((element) => element.type == "income")
+            .toList());
+        expenseCat(res.expenseCategories
+            .where((element) => element.type == "expense")
+            .toList());
+        // incomeCat(res.incomeCategories);
+        //  expenseCat(res.expenseCategories);
         categories(res);
       }
     } finally {

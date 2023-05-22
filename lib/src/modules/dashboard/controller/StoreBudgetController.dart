@@ -6,10 +6,11 @@ class StoreBudgetController extends GetxController {
   var isLoading = true.obs;
   var storeBudget = StoreBudget().obs;
 
-  Future<bool> addBudget(int categoryId, int type, int amount) async {
+  Future<bool> addBudget(
+      int categoryId, int type, int amount, String remark) async {
     try {
       isLoading(true);
-      final res = await APIs.storeBudget(categoryId, type, amount);
+      final res = await APIs.storeBudget(categoryId, type, amount, remark);
       if (res.status == true) {
         storeBudget(res);
       }

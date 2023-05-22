@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Get.to(AddBudgetScreen(
                                             title: "Add Income",
                                             type: 1,
-                                          ));
+                                          )).then((value) => Get.back());
                                         }),
                                         child: Wrap(
                                           alignment: WrapAlignment.center,
@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Get.to(AddBudgetScreen(
                                             title: "Add Expense",
                                             type: 2,
-                                          ));
+                                          )).then((value) => Get.back());
                                         }),
                                         child: Wrap(
                                           runAlignment: WrapAlignment.center,

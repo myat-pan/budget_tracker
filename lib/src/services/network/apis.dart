@@ -129,7 +129,7 @@ class APIs {
   }
 
   static Future<StoreBudget> storeBudget(
-      int categoryId, int type, int amount) async {
+      int categoryId, int type, int amount, String remark) async {
     var _url = _serverUrl + "/budgets";
     var token = await getToken();
     var res = await http.post(Uri.parse(_url), headers: {
@@ -139,6 +139,7 @@ class APIs {
       "category_id": categoryId.toString(),
       "type": type.toString(),
       "amount": amount.toString(),
+      "remark": remark.toString()
     });
 
     if (res.statusCode == 201) {

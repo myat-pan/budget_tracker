@@ -1,11 +1,11 @@
 import 'package:budget_tracker/src/modules/categories/controller/CategoriesController.dart';
-import 'package:budget_tracker/src/modules/categories/models/categories.dart';
 import 'package:budget_tracker/src/modules/dashboard/controller/StoreBudgetController.dart';
 import 'package:budget_tracker/src/modules/home/views/HomeScreen.dart';
 import 'package:budget_tracker/src/widgets/custom_loading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:budget_tracker/src/res/styles.dart' as style;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
@@ -33,8 +33,9 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   //   'Item3',
   //   'Item4',
   // ];
-  String incomeValue;
-  String expenseValue;
+  String incomeValue = "Select Income Category";
+  int selectedCatId;
+  String expenseValue = "Select Expense Category";
 
   _getCat() async {
     await categoriesController.fetchCategories();
@@ -42,14 +43,28 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
 
   @override
   void initState() {
-    _getCat();
+    WidgetsBinding.instance.scheduleFrameCallback((timeStamp) {
+      _getCat();
+    });
+
     super.initState();
   }
 
   _datePickerSection() {
     return Container(
       child: ListTile(
-        title: Text("Date"),
+        title: Wrap(
+          children: [
+            Icon(
+              CustomIcons.calendar_outlilne,
+              size: 18,
+            ),
+            SizedBox(
+              width: 4,
+            ),
+            Text("Date"),
+          ],
+        ),
         subtitle: Text("picker"),
       ),
     );
@@ -58,62 +73,81 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   _dropDownSection() {
     if (widget.type == 1) {
       return DropdownButton2(
-        hint: Text(
-          'Select Category',
-          style: TextStyle(
-            fontSize: 14,
-            color: Theme.of(context).hintColor,
-          ),
-        ),
+        hint: Text(incomeValue),
         items: categoriesController.incomeCat
-            .map((item) => DropdownMenuItem<Categories>(
-                  value: item,
-                  child: Text(
-                    item.name,
-                    style: const TextStyle(
-                      fontSize: 14,
+            .toList()
+            .map(
+              (e) => DropdownMenuItem(
+                child: Wrap(
+                  children: [
+                    SvgPicture.network(
+                      e.iconImage,
+                      width: 20,
+                      height: 20,
+                      placeholderBuilder: (BuildContext context) => Container(
+                          /*   padding: const EdgeInsets.all(
+                                                      30.0), */
+                          child: const CircularProgressIndicator()),
                     ),
-                  ),
-                ))
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      e.name ?? "",
+                    ),
+                  ],
+                ),
+                value: e,
+              ),
+            )
             .toList(),
-        value: incomeValue,
-        onChanged: (value) {
+        onChanged: (val) {
           setState(() {
-            incomeValue = value.name;
+            incomeValue = val.name;
+            selectedCatId = val.id;
           });
         },
-        buttonStyleData: const ButtonStyleData(
-          height: 40,
-          width: 140,
-        ),
-        menuItemStyleData: const MenuItemStyleData(
-          height: 40,
-        ),
       );
     } else {
       return DropdownButton2(
         hint: Text(
-          'Select Category',
+          expenseValue,
           style: TextStyle(
             fontSize: 14,
             color: Theme.of(context).hintColor,
           ),
         ),
         items: categoriesController.expenseCat
-            .map((item) => DropdownMenuItem<Categories>(
-                  value: item,
-                  child: Text(
-                    item.name,
-                    style: const TextStyle(
-                      fontSize: 14,
+            .toList()
+            .map(
+              (e) => DropdownMenuItem(
+                child: Wrap(
+                  children: [
+                    SvgPicture.network(
+                      e.iconImage,
+                      width: 20,
+                      height: 20,
+                      placeholderBuilder: (BuildContext context) => Container(
+                          /*   padding: const EdgeInsets.all(
+                                                      30.0), */
+                          child: const CircularProgressIndicator()),
                     ),
-                  ),
-                ))
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      e.name ?? "",
+                    ),
+                  ],
+                ),
+                value: e,
+              ),
+            )
             .toList(),
-        value: expenseValue,
         onChanged: (value) {
           setState(() {
-            expenseValue = value.name as String;
+            expenseValue = value.name;
+            selectedCatId = value.id;
           });
         },
         buttonStyleData: const ButtonStyleData(
@@ -129,7 +163,15 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
 
   _categorySection() {
     return ListTile(
-      title: Text("Category"),
+      title: Wrap(
+        children: [
+          Icon(
+            Icons.dashboard_outlined,
+            size: 20,
+          ),
+          Text("Category"),
+        ],
+      ),
       subtitle: DropdownButtonHideUnderline(child: _dropDownSection()),
     );
   }
@@ -211,7 +253,10 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
         onPressed: () async {
           EasyLoading.show(status: "Adding...").then((value) async {
             await controller.addBudget(
-                1, widget.type, int.parse(amountTextController.text));
+                selectedCatId,
+                widget.type,
+                int.parse(amountTextController.text),
+                remarkTextController.text);
             if (controller.storeBudget.value.status == true) {
               EasyLoading.dismiss();
               Get.offAll(HomeScreen());
@@ -237,6 +282,32 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
             style: style.appBarStyle,
           ),
         ),
+        persistentFooterAlignment: AlignmentDirectional.center,
+        persistentFooterButtons: [
+          SizedBox(
+            height: 46,
+            width: Get.width / 1.1,
+            child: ElevatedButton(
+                onPressed: () async {
+                  EasyLoading.show(status: "Adding...").then((value) async {
+                    await controller.addBudget(
+                        selectedCatId,
+                        widget.type,
+                        int.parse(amountTextController.text),
+                        remarkTextController.text);
+                    if (controller.storeBudget.value.status == true) {
+                      EasyLoading.dismiss();
+                      Get.offAll(HomeScreen());
+                    } else {
+                      EasyLoading.showError(
+                          controller.storeBudget.value.message,
+                          dismissOnTap: true);
+                    }
+                  });
+                },
+                child: Text("Add")),
+          )
+        ],
         body: Obx(
           () => categoriesController.isLoading.value
               ? Center(child: CustomLoading())
@@ -252,10 +323,17 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                       Divider(),
                       _amountSection(),
                       Divider(),
-                      _buttonSection()
+                      //   _buttonSection()
                     ],
                   ),
                 ),
         ));
   }
+}
+
+class MyDropDown {
+  MyDropDown(this.icon, this.name);
+
+  final String name;
+  final String icon;
 }
