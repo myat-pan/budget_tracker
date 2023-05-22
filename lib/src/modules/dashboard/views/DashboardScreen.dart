@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/format.dart' as format;
 import 'package:budget_tracker/src/res/colors.dart' as color;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -336,26 +337,62 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: color.primary,
                 )),
             onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                        title: Text(''),
-                        content: Container(
-                          height: 360,
-                          child: Column(
-                            children: <Widget>[
-                              getDateRangePicker(),
-                              MaterialButton(
-                                child: Text("OK"),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              )
-                            ],
-                          ),
-                        ));
-                  });
+              DatePicker.showPicker(context, showTitleActions: true,
+                  onChanged: (date) {
+                print('change $date in time zone ' +
+                    date.timeZoneOffset.inHours.toString());
+              }, onConfirm: (date) {
+                print('confirm $date');
+                setState(() {
+                  currentMonth = date.month;
+                  currentYear = date.year;
+                });
+                controller.fetchDashboard(currentMonth, currentYear);
+              },
+                  pickerModel: CustomMonthPicker(
+                      minTime: DateTime(2020, 1, 1),
+                      maxTime: DateTime.now(),
+                      currentTime: DateTime.now()),
+                  locale: LocaleType.en);
+
+              // DatePicker.showDatePicker(
+              //   context,
+              //   showTitleActions: true,
+              //   minTime: DateTime(2018, 3, 5),
+              //   locale: LocaleType.en,
+              //   pickerModel: CustomMonthPicker(
+              //       minTime: DateTime(2020, 1, 1),
+              //       maxTime: DateTime.now(),
+              //       currentTime: DateTime.now()),
+              //   maxTime: DateTime(2019, 6, 7),
+              //   onChanged: (date) {
+              //     print('change $date');
+              //   },
+              //   onConfirm: (date) {
+              //     print('confirm $date');
+              //   },
+              //   currentTime: DateTime.now(),
+              // );
+              // showDialog(
+              //     context: context,
+              //     builder: (BuildContext context) {
+              //       return AlertDialog(
+              //           title: Text(''),
+              //           content: Container(
+              //             height: 360,
+              //             child: Column(
+              //               children: <Widget>[
+              //                 getDateRangePicker(),
+              //                 MaterialButton(
+              //                   child: Text("OK"),
+              //                   onPressed: () {
+              //                     Navigator.pop(context);
+              //                   },
+              //                 )
+              //               ],
+              //             ),
+              //           ));
+              //     });
             },
             child: Wrap(
               children: [
@@ -466,5 +503,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
     ));
+  }
+}
+
+class CustomMonthPicker extends DatePickerModel {
+  CustomMonthPicker(
+      {DateTime currentTime,
+      DateTime minTime,
+      DateTime maxTime,
+      LocaleType locale})
+      : super(
+            locale: locale,
+            minTime: minTime,
+            maxTime: maxTime,
+            currentTime: currentTime);
+
+  @override
+  List<int> layoutProportions() {
+    return [1, 1, 0];
   }
 }
