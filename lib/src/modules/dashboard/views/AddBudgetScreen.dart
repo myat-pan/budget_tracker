@@ -1,14 +1,18 @@
 import 'package:budget_tracker/src/modules/categories/controller/CategoriesController.dart';
 import 'package:budget_tracker/src/modules/dashboard/controller/StoreBudgetController.dart';
+import 'package:budget_tracker/src/modules/dashboard/views/DashboardScreen.dart';
 import 'package:budget_tracker/src/modules/home/views/HomeScreen.dart';
 import 'package:budget_tracker/src/widgets/custom_loading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:budget_tracker/src/res/styles.dart' as style;
 import 'package:budget_tracker/src/res/dimens.dart' as dimens;
+import 'package:budget_tracker/src/res/colors.dart' as color;
+import 'package:intl/intl.dart';
 
 import '../../../widgets/custom_icons.dart';
 
@@ -36,6 +40,8 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   String incomeValue = "Select Income Category";
   int selectedCatId;
   String expenseValue = "Select Expense Category";
+  var currentMonth = DateTime.now().month;
+  var currentYear = DateTime.now().year;
 
   _getCat() async {
     await categoriesController.fetchCategories();
@@ -51,23 +57,118 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   }
 
   _datePickerSection() {
-    return Container(
-      child: ListTile(
-        title: Wrap(
-          children: [
-            Icon(
-              CustomIcons.calendar_outlilne,
-              size: 18,
-            ),
-            SizedBox(
-              width: 4,
-            ),
-            Text("Date"),
-          ],
-        ),
-        subtitle: Text("picker"),
-      ),
-    );
+    return ListTile(
+        title: Wrap(children: [
+          Icon(
+            CustomIcons.calendar_outlilne,
+            size: 18,
+          ),
+          SizedBox(
+            width: 4,
+          ),
+          Text("Date"),
+        ]),
+        subtitle: Container(
+            width: Get.width / 2,
+
+            //  margin: EdgeInsets.only(left: Get.width / 4, right: Get.width / 4),
+            child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            dimens.textFieldBorderRadius)),
+                    side: BorderSide(
+                      color: color.primary,
+                    )),
+                onPressed: () {
+                  // final selected = showMonthYearPicker(
+                  //   context: context,
+                  //   initialDate: selectedDate ?? DateTime.now(),
+                  //   firstDate: DateTime(2019),
+                  //   lastDate: DateTime(2030),
+                  // );
+
+                  DatePicker.showPicker(context, showTitleActions: true,
+                      onChanged: (date) {
+                    print('change $date in time zone ' +
+                        date.timeZoneOffset.inHours.toString());
+                  }, onConfirm: (date) {
+                    print('confirm $date');
+                    setState(() {
+                      currentMonth = date.month;
+                      currentYear = date.year;
+                    });
+                  },
+                      pickerModel: CustomMonthPicker(
+                          minTime: DateTime(2020, 1, 1),
+                          maxTime: DateTime.now(),
+                          currentTime: DateTime.now()),
+                      locale: LocaleType.en);
+
+                  // DatePicker.showDatePicker(
+                  //   context,
+                  //   showTitleActions: true,
+                  //   minTime: DateTime(2018, 3, 5),
+                  //   locale: LocaleType.en,
+                  //   pickerModel: CustomMonthPicker(
+                  //       minTime: DateTime(2020, 1, 1),
+                  //       maxTime: DateTime.now(),
+                  //       currentTime: DateTime.now()),
+                  //   maxTime: DateTime(2019, 6, 7),
+                  //   onChanged: (date) {
+                  //     print('change $date');
+                  //   },
+                  //   onConfirm: (date) {
+                  //     print('confirm $date');
+                  //   },
+                  //   currentTime: DateTime.now(),
+                  // );
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (BuildContext context) {
+                  //       return AlertDialog(
+                  //           title: Text(''),
+                  //           content: Container(
+                  //             height: 360,
+                  //             child: Column(
+                  //               children: <Widget>[
+                  //                 getDateRangePicker(),
+                  //                 MaterialButton(
+                  //                   child: Text("OK"),
+                  //                   onPressed: () {
+                  //                     Navigator.pop(context);
+                  //                   },
+                  //                 )
+                  //               ],
+                  //             ),
+                  //           ));
+                  //     });
+                },
+                child: Wrap(
+                  children: [
+                    Icon(
+                      CustomIcons.calendar_outlilne,
+                      size: 16,
+                      color: color.messageColor,
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      convertNumMonth(currentMonth) +
+                          " , " +
+                          currentYear.toString(),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: color.messageColor,
+                      ),
+                    )
+                  ],
+                ))));
+  }
+
+  String convertNumMonth(int m) {
+    return DateFormat('MMMM').format(DateTime(0, m));
   }
 
   _dropDownSection() {

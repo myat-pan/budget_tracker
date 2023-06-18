@@ -14,6 +14,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../../widgets/custom_picker.dart/month_year_picker.dart';
+
 class DashboardScreen extends StatefulWidget {
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -337,6 +339,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: color.primary,
                 )),
             onPressed: () {
+              // final selected = showMonthYearPicker(
+              //   context: context,
+              //   initialDate: selectedDate ?? DateTime.now(),
+              //   firstDate: DateTime(2019),
+              //   lastDate: DateTime(2030),
+              // );
+
               DatePicker.showPicker(context, showTitleActions: true,
                   onChanged: (date) {
                 print('change $date in time zone ' +
