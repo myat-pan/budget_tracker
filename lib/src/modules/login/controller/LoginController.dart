@@ -16,8 +16,8 @@ class LoginController extends GetxController {
       isLoading(true);
       final res = await APIs.login(email: email, password: password);
       if (res.status == true) {
-        storage.write(key: "name", value: res.data.name);
-        storage.write(key: "email", value: res.data.email);
+        storage.write(key: "name", value: res.data.user.name);
+        storage.write(key: "email", value: res.data.user.email);
         loginResult(res);
       } else {
         result.value.message = res.message;

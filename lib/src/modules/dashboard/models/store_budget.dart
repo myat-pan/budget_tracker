@@ -1,74 +1,132 @@
-class StoreBudget {
-  StoreBudget({
-    this.status,
-    this.id,
-    this.data,
-    this.message,
-  });
+// class StoreBudget {
+//   bool status;
+//   StoreBudgetData data;
+//   String message;
 
-  bool status;
+//   StoreBudget({
+//     this.status,
+//     this.data,
+//     this.message,
+//   });
+
+//   StoreBudget copyWith({
+//     bool status,
+//     StoreBudgetData data,
+//     String message,
+//   }) =>
+//       StoreBudget(
+//         status: status ?? this.status,
+//         data: data ?? this.data,
+//         message: message ?? this.message,
+//       );
+// }
+
+// class StoreBudgetData {
+//   String month;
+//   String year;
+//   List<DailyCard> dailyCards;
+
+//   StoreBudgetData({
+//     this.month,
+//     this.year,
+//     this.dailyCards,
+//   });
+
+//   StoreBudgetData copyWith({
+//     String month,
+//     String year,
+//     List<DailyCard> dailyCards,
+//   }) =>
+//       StoreBudgetData(
+//         month: month ?? this.month,
+//         year: year ?? this.year,
+//         dailyCards: dailyCards ?? this.dailyCards,
+//       );
+// }
+
+// class DailyCard {
+//   String day;
+//   int income;
+//   int expense;
+//   int netBudget;
+//   String percentage;
+//   List<BudgetItems> items;
+
+//   DailyCard({
+//     this.day,
+//     this.income,
+//     this.expense,
+//     this.netBudget,
+//     this.percentage,
+//     this.items,
+//   });
+
+//   DailyCard copyWith({
+//     String day,
+//     int income,
+//     int expense,
+//     int netBudget,
+//     String percentage,
+//     List<BudgetItems> items,
+//   }) =>
+//       DailyCard(
+//         day: day ?? this.day,
+//         income: income ?? this.income,
+//         expense: expense ?? this.expense,
+//         netBudget: netBudget ?? this.netBudget,
+//         percentage: percentage ?? this.percentage,
+//         items: items ?? this.items,
+//       );
+// }
+
+class BudgetItems {
   int id;
-  StoreBudgetData data;
-  String message;
+  int userId;
+  int categoryId;
+  String amount;
+  String type;
+  String remark;
+  DateTime createdDate;
+  DateTime createdAt;
+  DateTime updatedAt;
+  dynamic deletedAt;
+  Category category;
 
-  StoreBudget copyWith({
-    bool status,
-    int id,
-    StoreBudgetData data,
-    String message,
-  }) =>
-      StoreBudget(
-        status: status ?? this.status,
-        id: id ?? this.id,
-        data: data ?? this.data,
-        message: message ?? this.message,
-      );
-}
-
-class StoreBudgetData {
-  StoreBudgetData({
+  BudgetItems({
     this.id,
+    this.userId,
+    this.categoryId,
+    this.amount,
     this.type,
     this.remark,
-    this.amount,
-    this.categoryId,
-    this.userId,
+    this.createdDate,
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
     this.category,
   });
 
-  int id;
-  String type;
-  dynamic remark;
-  String amount;
-  int categoryId;
-  int userId;
-  DateTime createdAt;
-  DateTime updatedAt;
-  dynamic deletedAt;
-  Category category;
-
-  StoreBudgetData copyWith({
+  BudgetItems copyWith({
     int id,
-    String type,
-    dynamic remark,
-    String amount,
-    int categoryId,
     int userId,
+    int categoryId,
+    String amount,
+    String type,
+    String remark,
+    DateTime createdDate,
     DateTime createdAt,
     DateTime updatedAt,
     dynamic deletedAt,
     Category category,
   }) =>
-      StoreBudgetData(
+      BudgetItems(
         id: id ?? this.id,
+        userId: userId ?? this.userId,
+        categoryId: categoryId ?? this.categoryId,
+        amount: amount ?? this.amount,
         type: type ?? this.type,
         remark: remark ?? this.remark,
-        amount: amount ?? this.amount,
-        categoryId: categoryId ?? this.categoryId,
-        userId: userId ?? this.userId,
+        createdDate: createdDate ?? this.createdDate,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         deletedAt: deletedAt ?? this.deletedAt,
@@ -77,54 +135,54 @@ class StoreBudgetData {
 }
 
 class Category {
+  int id;
+  int userId;
+  String name;
+  String type;
+  String icon;
+  int iconId;
+  String color;
+  int isDefault;
+  DateTime createdAt;
+  DateTime updatedAt;
+  dynamic deletedAt;
+
   Category({
     this.id,
+    this.userId,
     this.name,
     this.type,
-    this.color,
+    this.icon,
     this.iconId,
-    this.iconImage,
+    this.color,
     this.isDefault,
-    this.userId,
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
   });
 
-  int id;
-  String name;
-  String type;
-  String color;
-  int iconId;
-  String iconImage;
-  int isDefault;
-  int userId;
-  DateTime createdAt;
-  DateTime updatedAt;
-  dynamic deletedAt;
-
   Category copyWith({
     int id,
+    int userId,
     String name,
     String type,
-    String color,
+    String icon,
     int iconId,
-    String iconImage,
+    String color,
     int isDefault,
-    int userId,
     DateTime createdAt,
     DateTime updatedAt,
     dynamic deletedAt,
   }) =>
       Category(
         id: id ?? this.id,
+        userId: userId ?? this.userId,
         name: name ?? this.name,
         type: type ?? this.type,
-        color: color ?? this.color,
+        icon: icon ?? this.icon,
         iconId: iconId ?? this.iconId,
-        iconImage: iconImage ?? this.iconImage,
+        color: color ?? this.color,
         isDefault: isDefault ?? this.isDefault,
-        userId: userId ?? this.userId,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         deletedAt: deletedAt ?? this.deletedAt,

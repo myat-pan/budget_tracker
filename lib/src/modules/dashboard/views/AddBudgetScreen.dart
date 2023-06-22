@@ -18,7 +18,7 @@ import '../../../widgets/custom_icons.dart';
 
 class AddBudgetScreen extends StatefulWidget {
   final String title;
-  final int type;
+  final String type;
 
   const AddBudgetScreen({Key key, this.title, this.type}) : super(key: key);
   @override
@@ -41,7 +41,9 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   int selectedCatId;
   String expenseValue = "Select Expense Category";
   var currentMonth = DateTime.now().month;
+  var currentDay = DateTime.now().day;
   var currentYear = DateTime.now().year;
+  var selectedDate;
 
   _getCat() async {
     await categoriesController.fetchCategories();
@@ -69,6 +71,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
           Text("Date"),
         ]),
         subtitle: Container(
+            margin: EdgeInsets.only(right: Get.width / 3.5),
             width: Get.width / 2,
 
             //  margin: EdgeInsets.only(left: Get.width / 4, right: Get.width / 4),
@@ -96,53 +99,15 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                     print('confirm $date');
                     setState(() {
                       currentMonth = date.month;
-                      currentYear = date.year;
+                      currentDay = date.day;
+                      selectedDate = date;
                     });
                   },
-                      pickerModel: CustomMonthPicker(
-                          minTime: DateTime(2020, 1, 1),
-                          maxTime: DateTime.now(),
+                      pickerModel: CustomDayPicker(
+                          minTime: DateTime(DateTime.now().year, 1, 1),
+                          maxTime: DateTime(DateTime.now().year, 12, 31),
                           currentTime: DateTime.now()),
                       locale: LocaleType.en);
-
-                  // DatePicker.showDatePicker(
-                  //   context,
-                  //   showTitleActions: true,
-                  //   minTime: DateTime(2018, 3, 5),
-                  //   locale: LocaleType.en,
-                  //   pickerModel: CustomMonthPicker(
-                  //       minTime: DateTime(2020, 1, 1),
-                  //       maxTime: DateTime.now(),
-                  //       currentTime: DateTime.now()),
-                  //   maxTime: DateTime(2019, 6, 7),
-                  //   onChanged: (date) {
-                  //     print('change $date');
-                  //   },
-                  //   onConfirm: (date) {
-                  //     print('confirm $date');
-                  //   },
-                  //   currentTime: DateTime.now(),
-                  // );
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (BuildContext context) {
-                  //       return AlertDialog(
-                  //           title: Text(''),
-                  //           content: Container(
-                  //             height: 360,
-                  //             child: Column(
-                  //               children: <Widget>[
-                  //                 getDateRangePicker(),
-                  //                 MaterialButton(
-                  //                   child: Text("OK"),
-                  //                   onPressed: () {
-                  //                     Navigator.pop(context);
-                  //                   },
-                  //                 )
-                  //               ],
-                  //             ),
-                  //           ));
-                  //     });
                 },
                 child: Wrap(
                   children: [
@@ -155,8 +120,10 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                       width: 4,
                     ),
                     Text(
-                      convertNumMonth(currentMonth) +
-                          " , " +
+                      currentDay.toString() +
+                          " / " +
+                          convertNumMonth(currentMonth) +
+                          " / " +
                           currentYear.toString(),
                       style: TextStyle(
                         fontSize: 14,
@@ -357,9 +324,10 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                 selectedCatId,
                 widget.type,
                 int.parse(amountTextController.text),
-                remarkTextController.text);
+                remarkTextController.text,
+                selectedDate);
+            EasyLoading.dismiss();
             if (controller.storeBudget.value.status == true) {
-              EasyLoading.dismiss();
               Get.offAll(HomeScreen());
             } else {
               EasyLoading.showError(controller.storeBudget.value.message,
@@ -395,9 +363,10 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                         selectedCatId,
                         widget.type,
                         int.parse(amountTextController.text),
-                        remarkTextController.text);
+                        remarkTextController.text,
+                        selectedDate);
+                    EasyLoading.dismiss();
                     if (controller.storeBudget.value.status == true) {
-                      EasyLoading.dismiss();
                       Get.offAll(HomeScreen());
                     } else {
                       EasyLoading.showError(

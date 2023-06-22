@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onTap: (() {
                                           Get.to(AddBudgetScreen(
                                             title: "Add Income",
-                                            type: 1,
+                                            type: 'income',
                                           )).then((value) => Get.back());
                                         }),
                                         child: Wrap(
@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onTap: (() {
                                           Get.to(AddBudgetScreen(
                                             title: "Add Expense",
-                                            type: 2,
+                                            type: 'expense',
                                           )).then((value) => Get.back());
                                         }),
                                         child: Wrap(

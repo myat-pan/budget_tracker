@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../../widgets/custom_picker.dart/month_year_picker.dart';
+import '../models/budget.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -107,7 +108,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  _dailyBudgetWidget(List<StoreBudgetData> data) {
+  _dailyBudgetWidget(List<BudgetItems> data) {
     return Container(
       child: ListView.builder(
           physics: NeverScrollableScrollPhysics(),
@@ -115,20 +116,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
           itemCount: data.length,
           itemBuilder: (context, i) {
             return ListTile(
+                horizontalTitleGap: 2,
                 visualDensity: VisualDensity(horizontal: -4, vertical: -4),
                 leading: SvgPicture.network(
-                  data[i].category.iconImage,
-                  width: 50,
-                  height: 50,
+                  data[i].category.icon,
+                  width: 30,
+                  height: 30,
                   color: Colors.black,
                 ),
                 title: Text(data[i].category.name),
-                subtitle: Text(
-                  data[i].category.type,
-                  style: TextStyle(color: color.subtitleColor),
-                ),
+                subtitle: Visibility(
+                    visible: data[i].remark == "" ? false : true,
+                    child: Text(
+                      data[i].remark,
+                      style: TextStyle(color: Colors.grey),
+                    )),
                 trailing: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.start,
                     children: [
                       Text(
                         data[i].amount.toString(),
@@ -138,6 +144,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 : color.expenseColor),
                       ),
                       IconButton(
+                          constraints: BoxConstraints(),
+                          padding: EdgeInsets.zero,
                           onPressed: () async {
                             EasyLoading.show(status: "deleting...")
                                 .then((value) async {
@@ -530,5 +538,23 @@ class CustomMonthPicker extends DatePickerModel {
   @override
   List<int> layoutProportions() {
     return [1, 1, 0];
+  }
+}
+
+class CustomDayPicker extends DatePickerModel {
+  CustomDayPicker(
+      {DateTime currentTime,
+      DateTime minTime,
+      DateTime maxTime,
+      LocaleType locale})
+      : super(
+            locale: locale,
+            minTime: minTime,
+            maxTime: maxTime,
+            currentTime: currentTime);
+
+  @override
+  List<int> layoutProportions() {
+    return [0, 1, 1];
   }
 }

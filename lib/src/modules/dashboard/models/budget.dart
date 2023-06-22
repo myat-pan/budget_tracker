@@ -53,7 +53,7 @@ class DailyCard {
   int expense;
   String netBudget;
   String percentage;
-  List<StoreBudgetData> items;
+  List<BudgetItems> items;
 
   DailyCard copyWith({
     String day,
@@ -61,7 +61,7 @@ class DailyCard {
     int expense,
     int netBudget,
     String percentage,
-    List<StoreBudgetData> items,
+    List<BudgetItems> items,
   }) =>
       DailyCard(
         day: day ?? this.day,

@@ -23,7 +23,7 @@ class APIs {
   }
 
   static Future<LoginResult> login({String email, String password}) async {
-    final _url = _serverUrl + "/login";
+    final _url = _serverUrl + "/auth/login";
     final res = await http.post(Uri.parse(_url), body: {
       'email': email.trim(),
       "password": password.trim()
@@ -34,22 +34,29 @@ class APIs {
     final result = json.decode(res.body);
     if (res.statusCode == 200) {
       final data = result['data'];
-      storage.write(value: result['token'], key: 'token');
+      storage.write(value: data['token'], key: 'token');
       return LoginResult(
           status: result['status'],
           message: result['message'],
-          token: result['token'],
           data: LoginData(
-            id: data['id'],
-            name: data['name'],
-            email: data['email'],
-            gender: data['gender'],
-            image: data['image'],
-          ));
+              user: User(
+                id: data['user']['id'],
+                name: data['user']['name'],
+                email: data['user']['email'],
+                gender: data['user']['gender'],
+                image: data['user']['image'],
+              ),
+              token: data['token']));
     } else if (res.statusCode == 401) {
-      return LoginResult(status: false, message: result['message'], token: "");
+      return LoginResult(
+          status: false,
+          message: result['message'],
+          data: LoginData(token: ""));
     } else {
-      return LoginResult(status: false, message: result['message'], token: "");
+      return LoginResult(
+          status: false,
+          message: result['message'],
+          data: LoginData(token: ""));
     }
   }
 
@@ -77,18 +84,25 @@ class APIs {
       return LoginResult(
           status: result['status'],
           message: result['message'],
-          token: result['token'],
           data: LoginData(
-            id: data['id'],
-            name: data['name'],
-            email: data['email'],
-            gender: data['gender'],
-            image: data['image'],
-          ));
+              user: User(
+                id: data['user']['id'],
+                name: data['user']['name'],
+                email: data['user']['email'],
+                gender: data['user']['gender'],
+                image: data['user']['image'],
+              ),
+              token: data['token']));
     } else if (res.statusCode == 401) {
-      return LoginResult(status: false, message: result['message'], token: "");
+      return LoginResult(
+          status: false,
+          message: result['message'],
+          data: LoginData(token: ""));
     } else {
-      return LoginResult(status: false, message: result['message'], token: "");
+      return LoginResult(
+          status: false,
+          message: result['message'],
+          data: LoginData(token: ""));
     }
   }
 
@@ -107,7 +121,8 @@ class APIs {
     }
   }
 
-  static Future<Result> storeCategory(String name, int iconId, int type) async {
+  static Future<Result> storeCategory(
+      String name, int iconId, String type) async {
     var _url = _serverUrl + "/categories";
     var token = await getToken();
     var res = await http.post(Uri.parse(_url), headers: {
@@ -128,8 +143,8 @@ class APIs {
     }
   }
 
-  static Future<StoreBudget> storeBudget(
-      int categoryId, int type, int amount, String remark) async {
+  static Future<Budget> storeBudget(int categoryId, String type, int amount,
+      String remark, DateTime date) async {
     var _url = _serverUrl + "/budgets";
     var token = await getToken();
     var res = await http.post(Uri.parse(_url), headers: {
@@ -139,22 +154,16 @@ class APIs {
       "category_id": categoryId.toString(),
       "type": type.toString(),
       "amount": amount.toString(),
-      "remark": remark.toString()
+      "remark": remark.toString(),
+      "date": date.toString()
     });
 
-    if (res.statusCode == 201) {
+    if (res.statusCode == 200) {
       final result = json.decode(res.body);
-      return StoreBudget(
-          status: result['status'],
-          id: result['id'],
-          message: result['message'],
-          data: StoreBudgetData(
-            id: result['data']['id'],
-            type: result['data']['type'],
-            remark: result['data']['remark'],
-            amount: result['data']['amount'].toString(),
-            categoryId: int.parse(result['data']['category_id']),
-          ));
+      return Budget(
+        status: result['status'],
+        message: result['message'],
+      );
     }
   }
 
@@ -208,25 +217,26 @@ class APIs {
       return CategoriesResult(
           status: result['status'],
           message: result['message'],
-          incomeCategories: result['income_categories'].map<Categories>((list) {
+          incomeCategories:
+              result['data']['income_categories'].map<Categories>((list) {
             return Categories(
               id: list['id'],
               name: list['name'],
               type: list['type'],
               color: list['color'],
-              iconImage: list['icon_image'],
+              iconImage: list['icon'],
               isDefault: list['is_default'],
               //  userId: list['user_id'],
             );
           }).toList(),
           expenseCategories:
-              result['expense_categories'].map<Categories>((list) {
+              result['data']['expense_categories'].map<Categories>((list) {
             return Categories(
               id: list['id'],
               name: list['name'],
               type: list['type'],
               color: list['color'],
-              iconImage: list['icon_image'],
+              iconImage: list['icon'],
               isDefault: list['is_default'],
               //  userId: list['user_id'],
             );
@@ -250,7 +260,7 @@ class APIs {
           status: result['status'],
           total: result['total'],
           message: result['message'],
-          data: result['data'].map<IconsData>((list) {
+          data: result['data']['icons'].map<IconsData>((list) {
             return IconsData(id: list['id'], image: list['image']);
           }).toList());
     } else {}
@@ -278,8 +288,8 @@ class APIs {
               expense: list['expense'],
               netBudget: list['net_budget'].toString(),
               percentage: list['percentage'].toString(),
-              items: list['items'].map<StoreBudgetData>((item) {
-                return StoreBudgetData(
+              items: list['items'].map<BudgetItems>((item) {
+                return BudgetItems(
                     id: item['id'],
                     type: item['type'],
                     remark: item['remark'],
@@ -290,7 +300,7 @@ class APIs {
                       name: item['category']['name'],
                       type: item['category']['type'],
                       color: item['category']['color'],
-                      iconImage: item['category']['icon_image'],
+                      icon: item['category']['icon'],
                       isDefault: item['category']['is_default'],
                     ));
               }).toList(),

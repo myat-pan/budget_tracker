@@ -126,7 +126,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                         appBarTitle: "Income Category",
                                         textController: _incomeTextController,
                                         onPress: () {},
-                                        type: 1,
+                                        type: 'income',
                                       ));
                                       /* Get.defaultDialog(
                                         titlePadding: EdgeInsets.all(16),
@@ -265,7 +265,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                   Get.to(AddCategoryScreen(
                                     appBarTitle: "Expense Category",
                                     textController: _expenseTextController,
-                                    type: 2,
+                                    type: 'expense',
                                   ));
                                 },
                                 child: Wrap(

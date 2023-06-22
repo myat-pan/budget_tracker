@@ -3,18 +3,19 @@ import 'package:budget_tracker/src/modules/categories/views/CategoryIconsScreen.
 import 'package:budget_tracker/src/modules/login/components/text_form_field_widget.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:budget_tracker/src/widgets/custom_loading.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/styles.dart' as style;
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:get/get.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   final String appBarTitle;
   final TextEditingController textController;
   final Function onPress;
-  final int type;
+  final String type;
 
   const AddCategoryScreen(
       {Key key, this.appBarTitle, this.textController, this.onPress, this.type})
@@ -27,7 +28,9 @@ class AddCategoryScreen extends StatefulWidget {
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   final CategoriesController controller = Get.put(CategoriesController());
   String selectedValue;
-
+// create some values
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
   // final List<String> items = [
   //   'Item1',
   //   'Item2',
@@ -48,6 +51,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     });
 
     super.initState();
+  }
+
+// ValueChanged<Color> callback
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
   }
 
   @override
@@ -78,29 +86,79 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         body: Obx(() => controller.isLoading.value
             ? CustomLoading()
             : SingleChildScrollView(
-                child: Column(children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: Get.width / 1.5,
-                  child: OutlinedButton(
-                      // style: ElevatedButton.styleFrom(primary: Colors.grey),
-                      onPressed: () {
-                        Get.to(CategoryIconsScreen(
-                          icons: controller.categoryIcons.value,
-                        )).then((value) {
-                          setState(() {
-                            iconImage = value[0];
-                            iconId = value[1];
-                          });
-                        });
-                      },
-                      child:
-                          Text(iconImage == "" ? "Choose Icons" : iconImage)),
-                ),
-
-                /*  DropdownButtonHideUnderline(
+                child: Container(
+                    margin: EdgeInsets.all(16),
+                    child: Column(children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        width: Get.width / 1.5,
+                        child: OutlinedButton(
+                            // style: ElevatedButton.styleFrom(primary: Colors.grey),
+                            onPressed: () {
+                              Get.to(CategoryIconsScreen(
+                                icons: controller.categoryIcons.value,
+                              )).then((value) {
+                                setState(() {
+                                  iconImage = value[0];
+                                  iconId = value[1];
+                                });
+                              });
+                            },
+                            child: Text(
+                                iconImage == "" ? "Choose Icons" : iconImage)),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Choose Color"),
+                          OutlinedButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Pick a color!'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            paletteType: PaletteType.hueWheel,
+                                            pickerColor:
+                                                currentColor, //default color
+                                            onColorChanged: (Color color) {
+                                              //on color picked
+                                              setState(() {
+                                                currentColor = color;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                            child: const Text('DONE'),
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); //dismiss the color picker
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: Wrap(
+                                direction: Axis.horizontal,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Text(currentColor.toString()),
+                                  Icon(
+                                    Icons.circle,
+                                    color: Color(currentColor.value),
+                                  )
+                                ],
+                              ))
+                        ],
+                      ),
+                      /*  DropdownButtonHideUnderline(
                   child: DropdownButton2(
                     isExpanded: true,
                     hint: Row(
@@ -185,41 +243,42 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                     offset: const Offset(-20, 0),
                   ),
                 ), */
-                Container(
-                    padding: EdgeInsets.all(20),
-                    child: TextFormFieldWidget(
-                      controller: widget.textController,
-                      icon: CustomIcons.th_thumb_empty,
-                      labelText: "Category Name",
-                      showSuffix: false,
-                      obsecureText: false,
-                      iconSize: 16,
-                    )),
-                Container(
-                    width: Get.width / 1.5,
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          await controller.makeStoreCategory(
-                              widget.textController.text, iconId, widget.type);
-                          if (controller.result.value.status == true) {
-                            setState(() {
-                              iconImage = "";
-                              iconId = 0;
-                            });
+                      Container(
+                          child: TextFormFieldWidget(
+                        controller: widget.textController,
+                        icon: CustomIcons.th_thumb_empty,
+                        labelText: "Category Name",
+                        showSuffix: false,
+                        obsecureText: false,
+                        iconSize: 16,
+                      )),
+                      Container(
+                          width: Get.width / 1.5,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                await controller.makeStoreCategory(
+                                    widget.textController.text,
+                                    iconId,
+                                    widget.type);
+                                if (controller.result.value.status == true) {
+                                  setState(() {
+                                    iconImage = "";
+                                    iconId = 0;
+                                  });
 
-                            EasyLoading.showSuccess(
-                                    controller.result.value.message)
-                                .then((value) {
-                              widget.textController.clear();
-                              controller.fetchCategories();
-                            });
-                          } else {
-                            EasyLoading.showError(
-                                controller.result.value.message,
-                                dismissOnTap: true);
-                          }
-                        },
-                        child: Text("Add")))
-              ]))));
+                                  EasyLoading.showSuccess(
+                                          controller.result.value.message)
+                                      .then((value) {
+                                    widget.textController.clear();
+                                    controller.fetchCategories();
+                                  });
+                                } else {
+                                  EasyLoading.showError(
+                                      controller.result.value.message,
+                                      dismissOnTap: true);
+                                }
+                              },
+                              child: Text("Add")))
+                    ])))));
   }
 }
