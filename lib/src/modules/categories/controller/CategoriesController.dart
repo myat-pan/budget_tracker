@@ -2,6 +2,7 @@ import 'package:budget_tracker/src/modules/categories/models/categories.dart';
 import 'package:budget_tracker/src/modules/categories/models/categories_icon.dart';
 import 'package:budget_tracker/src/modules/login/models/result.dart';
 import 'package:budget_tracker/src/services/network/apis.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CategoriesController extends GetxController {
@@ -32,10 +33,11 @@ class CategoriesController extends GetxController {
     }
   }
 
-  Future<bool> makeStoreCategory(String name, int iconId, String type) async {
+  Future<bool> makeStoreCategory(
+      String name, int iconId, String type, Color color, String icon) async {
     try {
       isLoading(true);
-      final res = await APIs.storeCategory(name, iconId, type);
+      final res = await APIs.storeCategory(name, iconId, type, color, icon);
       if (res.status) {
         result(res);
       }

@@ -120,9 +120,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 visualDensity: VisualDensity(horizontal: -4, vertical: -4),
                 leading: SvgPicture.network(
                   data[i].category.icon,
-                  width: 30,
-                  height: 30,
-                  color: Colors.black,
+                  width: 24,
+                  height: 24,
+                  color: color.hexToColor(data[i].category.color),
                 ),
                 title: Text(data[i].category.name),
                 subtitle: Visibility(

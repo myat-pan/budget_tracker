@@ -44,6 +44,8 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
                 size: widget.iconSize.toDouble(),
                 color: Colors.black.withOpacity(0.7),
               ),
+              hintText: "eg: Dog Food, Part Time",
+              hintStyle: TextStyle(),
               suffixIcon: widget.showSuffix
                   ? IconButton(
                       icon: Icon(

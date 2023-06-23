@@ -10,6 +10,8 @@ import 'package:budget_tracker/src/res/dimens.dart' as dimen;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../../res/colors.dart';
+
 class CategoriesScreen extends StatefulWidget {
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
@@ -186,6 +188,11 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                               .incomeCategories[i].iconImage,
                                           width: 20,
                                           height: 20,
+                                          color: hexToColor(controller
+                                              .categories
+                                              .value
+                                              .incomeCategories[i]
+                                              .color),
                                           placeholderBuilder: (BuildContext
                                                   context) =>
                                               Container(
@@ -295,6 +302,8 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                         .expenseCategories[i].iconImage,
                                     width: 20,
                                     height: 20,
+                                    color: hexToColor(controller.categories
+                                        .value.expenseCategories[i].color),
                                     placeholderBuilder:
                                         (BuildContext context) => Container(
                                             padding: const EdgeInsets.all(30.0),

@@ -43,7 +43,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   var currentMonth = DateTime.now().month;
   var currentDay = DateTime.now().day;
   var currentYear = DateTime.now().year;
-  var selectedDate;
+  var selectedDate = DateTime.now();
 
   _getCat() async {
     await categoriesController.fetchCategories();
@@ -139,7 +139,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   }
 
   _dropDownSection() {
-    if (widget.type == 1) {
+    if (widget.type == "income") {
       return DropdownButton2(
         hint: Text(incomeValue),
         items: categoriesController.incomeCat
@@ -152,6 +152,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                       e.iconImage,
                       width: 20,
                       height: 20,
+                      color: color.hexToColor(e.color),
                       placeholderBuilder: (BuildContext context) => Container(
                           /*   padding: const EdgeInsets.all(
                                                       30.0), */
@@ -195,6 +196,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                       e.iconImage,
                       width: 20,
                       height: 20,
+                      color: color.hexToColor(e.color),
                       placeholderBuilder: (BuildContext context) => Container(
                           /*   padding: const EdgeInsets.all(
                                                       30.0), */

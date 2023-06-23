@@ -9,6 +9,8 @@ import 'package:budget_tracker/src/modules/login/models/login_result.dart';
 import 'package:budget_tracker/src/modules/login/models/result.dart';
 import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:budget_tracker/src/modules/profile/models/profile.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -122,7 +124,7 @@ class APIs {
   }
 
   static Future<Result> storeCategory(
-      String name, int iconId, String type) async {
+      String name, int iconId, String type, Color c, String icon) async {
     var _url = _serverUrl + "/categories";
     var token = await getToken();
     var res = await http.post(Uri.parse(_url), headers: {
@@ -132,8 +134,8 @@ class APIs {
       "name": name,
       "type": type.toString(),
       "icon_id": iconId.toString(),
-      // "icon_image": "",
-      "color": "#ff0000"
+      "icon": icon.toString(),
+      "color": colorToHex(c).toString(),
     });
     //  final result = json.decode(res.body);
     if (res.statusCode == 201) {

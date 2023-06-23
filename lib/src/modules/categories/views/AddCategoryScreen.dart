@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:budget_tracker/src/modules/categories/controller/CategoriesController.dart';
 import 'package:budget_tracker/src/modules/categories/views/CategoryIconsScreen.dart';
 import 'package:budget_tracker/src/modules/login/components/text_form_field_widget.dart';
@@ -28,6 +30,7 @@ class AddCategoryScreen extends StatefulWidget {
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   final CategoriesController controller = Get.put(CategoriesController());
   String selectedValue;
+
 // create some values
   Color pickerColor = Color(0xff443a49);
   Color currentColor = Color(0xff443a49);
@@ -43,6 +46,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   // ];
 
   String iconImage = "";
+  String selectedImage = "";
   int iconId = 0;
   @override
   void initState() {
@@ -83,81 +87,180 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             style: style.appBarStyle,
           ),
         ),
+        persistentFooterAlignment: AlignmentDirectional.center,
+        persistentFooterButtons: [
+          Container(
+              height: 40,
+              width: Get.width / 1.1,
+              child: ElevatedButton(
+                  onPressed: () async {
+                    await controller.makeStoreCategory(
+                        widget.textController.text,
+                        iconId,
+                        widget.type,
+                        currentColor,
+                        "");
+                    if (controller.result.value.status == true) {
+                      setState(() {
+                        iconImage = "";
+                        iconId = 0;
+                        currentColor;
+                      });
+
+                      EasyLoading.showSuccess(controller.result.value.message)
+                          .then((value) {
+                        widget.textController.clear();
+                        controller.fetchCategories();
+                      });
+                    } else {
+                      EasyLoading.showError(controller.result.value.message,
+                          dismissOnTap: true);
+                    }
+                  },
+                  child: Text("Add")))
+        ],
         body: Obx(() => controller.isLoading.value
             ? CustomLoading()
             : SingleChildScrollView(
                 child: Container(
                     margin: EdgeInsets.all(16),
                     child: Column(children: [
-                      SizedBox(
-                        height: 20,
+                      Row(
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: Text(
+                                "Choose Icons :",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                          Expanded(
+                            flex: 2,
+                            child: OutlinedButton(
+                                // style: ElevatedButton.styleFrom(primary: Colors.grey),
+                                onPressed: () {
+                                  Get.to(CategoryIconsScreen(
+                                    icons: controller.categoryIcons.value,
+                                  )).then((value) {
+                                    setState(() {
+                                      iconImage = value[0];
+                                      iconId = value[1];
+                                    });
+                                  });
+                                },
+                                child: Text(iconImage == ""
+                                    ? "Choose from existing icon"
+                                    : iconImage)),
+                          ),
+                        ],
                       ),
-                      Container(
-                        width: Get.width / 1.5,
-                        child: OutlinedButton(
-                            // style: ElevatedButton.styleFrom(primary: Colors.grey),
-                            onPressed: () {
-                              Get.to(CategoryIconsScreen(
-                                icons: controller.categoryIcons.value,
-                              )).then((value) {
-                                setState(() {
-                                  iconImage = value[0];
-                                  iconId = value[1];
-                                });
-                              });
-                            },
-                            child: Text(
-                                iconImage == "" ? "Choose Icons" : iconImage)),
+                      Text(
+                        "OR",
+                        textAlign: TextAlign.center,
                       ),
+                      Row(
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: Text(
+                                "Choose From Gallery :",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                          Expanded(
+                            flex: 2,
+                            child: OutlinedButton(
+                                // style: ElevatedButton.styleFrom(primary: Colors.grey),
+                                onPressed: () async {
+                                  // Get.to(CategoryIconsScreen(
+                                  //   icons: controller.categoryIcons.value,
+                                  // )).then((value) {
+                                  //   setState(() {
+                                  //     iconImage = value[0];
+                                  //     iconId = value[1];
+                                  //   });
+                                  // });
+
+                                  // FilePickerResult result =
+                                  //     await FilePicker.platform.pickFiles(
+                                  //   type: FileType.custom,
+                                  //   allowMultiple: false,
+                                  //   allowedExtensions: ['svg'],
+                                  // );
+                                  // if (result != null) {
+                                  //   File file = File(result.files.single.path);
+                                  // } else {
+                                  //   // User canceled the picker
+                                  // }
+                                },
+                                child: Text(selectedImage == ""
+                                    ? "Choose image from Gallery (svg only)"
+                                    : selectedImage)),
+                          ),
+                        ],
+                      ),
+                      Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Choose Color"),
-                          OutlinedButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text('Pick a color!'),
-                                        content: SingleChildScrollView(
-                                          child: ColorPicker(
-                                            paletteType: PaletteType.hueWheel,
-                                            pickerColor:
-                                                currentColor, //default color
-                                            onColorChanged: (Color color) {
-                                              //on color picked
-                                              setState(() {
-                                                currentColor = color;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          ElevatedButton(
-                                            child: const Text('DONE'),
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pop(); //dismiss the color picker
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    });
-                              },
-                              child: Wrap(
-                                direction: Axis.horizontal,
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: [
-                                  Text(currentColor.toString()),
-                                  Icon(
-                                    Icons.circle,
-                                    color: Color(currentColor.value),
-                                  )
-                                ],
-                              ))
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Choose Color :",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Expanded(
+                              flex: 2,
+                              child: OutlinedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Pick a color!'),
+                                            content: SingleChildScrollView(
+                                              child: ColorPicker(
+                                                paletteType:
+                                                    PaletteType.hueWheel,
+                                                pickerColor:
+                                                    currentColor, //default color
+                                                onColorChanged: (Color color) {
+                                                  //on color picked
+                                                  setState(() {
+                                                    currentColor = color;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            actions: <Widget>[
+                                              ElevatedButton(
+                                                child: const Text('DONE'),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); //dismiss the color picker
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                  child: Wrap(
+                                    direction: Axis.horizontal,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    children: [
+                                      Text(currentColor.toString()),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Icon(
+                                        Icons.circle,
+                                        color: Color(currentColor.value),
+                                      )
+                                    ],
+                                  )))
                         ],
                       ),
+                      Divider(),
                       /*  DropdownButtonHideUnderline(
                   child: DropdownButton2(
                     isExpanded: true,
@@ -243,42 +346,24 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                     offset: const Offset(-20, 0),
                   ),
                 ), */
-                      Container(
-                          child: TextFormFieldWidget(
-                        controller: widget.textController,
-                        icon: CustomIcons.th_thumb_empty,
-                        labelText: "Category Name",
-                        showSuffix: false,
-                        obsecureText: false,
-                        iconSize: 16,
-                      )),
-                      Container(
-                          width: Get.width / 1.5,
-                          child: ElevatedButton(
-                              onPressed: () async {
-                                await controller.makeStoreCategory(
-                                    widget.textController.text,
-                                    iconId,
-                                    widget.type);
-                                if (controller.result.value.status == true) {
-                                  setState(() {
-                                    iconImage = "";
-                                    iconId = 0;
-                                  });
+                      Row(children: [
+                        Expanded(
+                            child: Text(
+                          "Category Name :",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                        Expanded(
+                            flex: 2,
+                            child: TextFormFieldWidget(
+                              controller: widget.textController,
+                              //icon: CustomIcons.th_thumb_empty,
 
-                                  EasyLoading.showSuccess(
-                                          controller.result.value.message)
-                                      .then((value) {
-                                    widget.textController.clear();
-                                    controller.fetchCategories();
-                                  });
-                                } else {
-                                  EasyLoading.showError(
-                                      controller.result.value.message,
-                                      dismissOnTap: true);
-                                }
-                              },
-                              child: Text("Add")))
+                              // labelText: "Category Name",
+                              showSuffix: false,
+                              obsecureText: false,
+                              iconSize: 16,
+                            )),
+                      ]),
                     ])))));
   }
 }
