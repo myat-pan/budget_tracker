@@ -5,6 +5,7 @@ import 'package:budget_tracker/src/modules/categories/views/CategoryIconsScreen.
 import 'package:budget_tracker/src/modules/login/components/text_form_field_widget.dart';
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:budget_tracker/src/widgets/custom_loading.dart';
+import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/src/res/styles.dart' as style;
@@ -30,10 +31,11 @@ class AddCategoryScreen extends StatefulWidget {
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   final CategoriesController controller = Get.put(CategoriesController());
   String selectedValue;
+  var _file = "";
 
 // create some values
   Color pickerColor = Color(0xff443a49);
-  Color currentColor = Color(0xff443a49);
+  Color currentColor = Color(0xff2e2bed);
   // final List<String> items = [
   //   'Item1',
   //   'Item2',
@@ -99,12 +101,13 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                         iconId,
                         widget.type,
                         currentColor,
-                        "");
+                        _file);
                     if (controller.result.value.status == true) {
                       setState(() {
                         iconImage = "";
                         iconId = 0;
                         currentColor;
+                        _file = "";
                       });
 
                       EasyLoading.showSuccess(controller.result.value.message)
@@ -153,9 +156,15 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                           ),
                         ],
                       ),
+                      SizedBox(
+                        height: 4,
+                      ),
                       Text(
-                        "OR",
+                        "------------------ OR -------------------",
                         textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 4,
                       ),
                       Row(
                         children: [
@@ -179,21 +188,25 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                                   //   });
                                   // });
 
-                                  // FilePickerResult result =
-                                  //     await FilePicker.platform.pickFiles(
-                                  //   type: FileType.custom,
-                                  //   allowMultiple: false,
-                                  //   allowedExtensions: ['svg'],
-                                  // );
-                                  // if (result != null) {
-                                  //   File file = File(result.files.single.path);
-                                  // } else {
-                                  //   // User canceled the picker
-                                  // }
+                                  FilePickerResult result =
+                                      await FilePicker.platform.pickFiles(
+                                    type: FileType.custom,
+                                    allowMultiple: false,
+                                    allowedExtensions: ['svg'],
+                                  );
+                                  if (result != null) {
+                                    File file = File(result.files.single.path);
+                                    print(file);
+                                    setState(() {
+                                      _file = file.path.toString();
+                                    });
+                                  } else {
+                                    // User canceled the picker
+                                  }
                                 },
-                                child: Text(selectedImage == ""
+                                child: Text(_file == ""
                                     ? "Choose image from Gallery (svg only)"
-                                    : selectedImage)),
+                                    : _file)),
                           ),
                         ],
                       ),

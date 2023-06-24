@@ -211,9 +211,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ]),
                               ]),
                         ),
+                        _dailyBudgetWidget(
+                            controller.budget.value.data.dailyCards[i].items),
                         Container(
-                          padding: EdgeInsets.only(top: 6),
+                          padding: EdgeInsets.all(8),
                           alignment: Alignment.center,
+                          color: Colors.grey[200],
                           child: Text(
                             "${controller.budget.value.data.dailyCards[i].percentage}% of your monthly Income was spent.",
                             style: TextStyle(
@@ -221,8 +224,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ),
                         ),
-                        _dailyBudgetWidget(
-                            controller.budget.value.data.dailyCards[i].items)
+                        SizedBox(
+                          height: 12,
+                        )
                       ]);
                 }),
           );

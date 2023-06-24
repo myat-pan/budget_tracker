@@ -109,7 +109,7 @@ class APIs {
   }
 
   static Future<Result> makeLogout() async {
-    var _url = _serverUrl + "/logout";
+    var _url = _serverUrl + "/auth/logout";
     var token = await getToken();
     var res = await http.post(Uri.parse(_url), headers: {
       HttpHeaders.acceptHeader: "application/json",
@@ -124,7 +124,7 @@ class APIs {
   }
 
   static Future<Result> storeCategory(
-      String name, int iconId, String type, Color c, String icon) async {
+      String name, int iconId, String type, String color, String icon) async {
     var _url = _serverUrl + "/categories";
     var token = await getToken();
     var res = await http.post(Uri.parse(_url), headers: {
@@ -135,7 +135,7 @@ class APIs {
       "type": type.toString(),
       "icon_id": iconId.toString(),
       "icon": icon.toString(),
-      "color": colorToHex(c).toString(),
+      "color": color.toString(),
     });
     //  final result = json.decode(res.body);
     if (res.statusCode == 201) {

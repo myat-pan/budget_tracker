@@ -21,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    controller.fetchProfile();
+    // controller.fetchProfile();
     super.initState();
   }
 
@@ -42,8 +42,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: Colors.white,
           ),
         ),
-        title: Text(controller.name.value ?? ""),
-        subtitle: Text(controller.email.value ?? ""),
+        title: Text('controller.name.value' ?? ""),
+        subtitle: Text('controller.email.value' ?? ""),
         trailing: IconButton(
             onPressed: () async {
               EasyLoading.show(status: "loading...").then((value) async {
@@ -51,6 +51,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if (controller.result.value.status == true) {
                   EasyLoading.dismiss();
                   controller.logginOut();
+                } else {
+                  EasyLoading.dismiss();
                 }
               });
             },
@@ -65,127 +67,113 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Obx(() => controller.isLoading.value
-            ? Center(
-                child: CustomLoading(),
-              )
-            : Container(
-                child: Column(
-                  children: [
-                    _userInfoSection(),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Expanded(
-                        flex: 0,
-                        child: Container(
-                            padding: EdgeInsets.only(
-                                left: 18, right: 18, top: 8, bottom: 8),
-                            color: Colors.grey[200],
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  DateTime.now().year.toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                                Text(
-                                  controller
-                                      .profile.value.data[0].brief.netBudget
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: color.inComeColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                )
-                              ],
-                            ))),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Expanded(
-                        flex: 3,
-                        child: Container(
-                            padding: EdgeInsets.only(left: 16, right: 16),
-                            child: ScrollConfiguration(
-                              behavior: ScrollBehavior(),
-                              child: DataTable2(
-                                  dataRowHeight: 28,
-                                  headingRowColor:
-                                      MaterialStateColor.resolveWith(
-                                    (states) {
-                                      return color.dataHeadingColor;
-                                    },
-                                  ),
-                                  dataRowColor: MaterialStateColor.resolveWith(
-                                    (states) {
-                                      return color.dataRowColor;
-                                    },
-                                  ),
-                                  border: TableBorder.all(
-                                      width: 1, color: Colors.black38),
-                                  showBottomBorder: true,
-                                  columnSpacing: 14,
-                                  horizontalMargin: 14,
-                                  minWidth: 40,
-                                  columns: [
-                                    DataColumn2(
-                                      label: Text('Month'),
-                                      size: ColumnSize.S,
-                                    ),
-                                    DataColumn2(
-                                      label: Text('Income'),
-                                      size: ColumnSize.L,
-                                    ),
-                                    DataColumn2(
-                                      label: Text('Expense'),
-                                      size: ColumnSize.L,
-                                    ),
-                                    DataColumn2(
-                                      label: Text('Net Budget'),
-                                      size: ColumnSize.L,
-                                    ),
-                                  ],
-                                  rows: List<DataRow>.generate(
-                                      controller.profile.value.data[0]
-                                          .monthlyResults.length,
-                                      (i) => DataRow(cells: [
-                                            DataCell(Text(
-                                              controller.profile.value.data[0]
-                                                  .monthlyResults[i].month,
-                                              style: TextStyle(
-                                                  color: color.messageColor),
-                                            )),
-                                            DataCell(Center(
-                                                child: Text(
-                                              controller.profile.value.data[0]
-                                                  .monthlyResults[i].income
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: color.inComeColor),
-                                            ))),
-                                            DataCell(Center(
-                                                child: Text(
-                                              controller.profile.value.data[0]
-                                                  .monthlyResults[i].expense
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: color.expenseColor),
-                                            ))),
-                                            DataCell(Center(
-                                                child: Text(controller
-                                                    .profile
-                                                    .value
-                                                    .data[0]
-                                                    .monthlyResults[i]
-                                                    .netBudget
-                                                    .toString()))),
-                                          ]))),
-                            )))
-                  ],
-                ),
-              )));
+        body: Container(
+      child: Column(
+        children: [
+          _userInfoSection(),
+          SizedBox(
+            height: 8,
+          ),
+          Expanded(
+              flex: 0,
+              child: Container(
+                  padding:
+                      EdgeInsets.only(left: 18, right: 18, top: 8, bottom: 8),
+                  color: Colors.grey[200],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        DateTime.now().year.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      // Text(
+                      //   controller.profile.value.data[0].brief.netBudget
+                      //       .toString(),
+                      //   style: TextStyle(
+                      //       color: color.inComeColor,
+                      //       fontWeight: FontWeight.bold,
+                      //       fontSize: 16),
+                      // )
+                    ],
+                  ))),
+          SizedBox(
+            height: 8,
+          ),
+          // Expanded(
+          //     flex: 3,
+          //     child: Container(
+          //         padding: EdgeInsets.only(left: 16, right: 16),
+          //         child: ScrollConfiguration(
+          //           behavior: ScrollBehavior(),
+          //           child: DataTable2(
+          //               dataRowHeight: 28,
+          //               headingRowColor: MaterialStateColor.resolveWith(
+          //                 (states) {
+          //                   return color.dataHeadingColor;
+          //                 },
+          //               ),
+          //               dataRowColor: MaterialStateColor.resolveWith(
+          //                 (states) {
+          //                   return color.dataRowColor;
+          //                 },
+          //               ),
+          //               border:
+          //                   TableBorder.all(width: 1, color: Colors.black38),
+          //               showBottomBorder: true,
+          //               columnSpacing: 14,
+          //               horizontalMargin: 14,
+          //               minWidth: 40,
+          //               columns: [
+          //                 DataColumn2(
+          //                   label: Text('Month'),
+          //                   size: ColumnSize.S,
+          //                 ),
+          //                 DataColumn2(
+          //                   label: Text('Income'),
+          //                   size: ColumnSize.L,
+          //                 ),
+          //                 DataColumn2(
+          //                   label: Text('Expense'),
+          //                   size: ColumnSize.L,
+          //                 ),
+          //                 DataColumn2(
+          //                   label: Text('Net Budget'),
+          //                   size: ColumnSize.L,
+          //                 ),
+          //               ],
+          //               rows: List<DataRow>.generate(
+          //                   controller
+          //                       .profile.value.data[0].monthlyResults.length,
+          //                   (i) => DataRow(cells: [
+          //                         DataCell(Text(
+          //                           controller.profile.value.data[0]
+          //                               .monthlyResults[i].month,
+          //                           style: TextStyle(color: color.messageColor),
+          //                         )),
+          //                         DataCell(Center(
+          //                             child: Text(
+          //                           controller.profile.value.data[0]
+          //                               .monthlyResults[i].income
+          //                               .toString(),
+          //                           style: TextStyle(color: color.inComeColor),
+          //                         ))),
+          //                         DataCell(Center(
+          //                             child: Text(
+          //                           controller.profile.value.data[0]
+          //                               .monthlyResults[i].expense
+          //                               .toString(),
+          //                           style: TextStyle(color: color.expenseColor),
+          //                         ))),
+          //                         DataCell(Center(
+          //                             child: Text(controller.profile.value
+          //                                 .data[0].monthlyResults[i].netBudget
+          //                                 .toString()))),
+          //                       ]))),
+          //         )))
+        ],
+      ),
+    ));
   }
 }

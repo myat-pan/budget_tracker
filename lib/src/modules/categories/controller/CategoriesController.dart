@@ -37,7 +37,9 @@ class CategoriesController extends GetxController {
       String name, int iconId, String type, Color color, String icon) async {
     try {
       isLoading(true);
-      final res = await APIs.storeCategory(name, iconId, type, color, icon);
+
+      var c = color.value.toRadixString(16).replaceRange(0, 2, "#");
+      final res = await APIs.storeCategory(name, iconId, type, c, icon);
       if (res.status) {
         result(res);
       }
