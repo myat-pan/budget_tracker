@@ -9,11 +9,14 @@ import 'package:budget_tracker/src/modules/login/models/login_result.dart';
 import 'package:budget_tracker/src/modules/login/models/result.dart';
 import 'package:budget_tracker/src/modules/login/views/LoginScreen.dart';
 import 'package:budget_tracker/src/modules/profile/models/profile.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get/get.dart';
+import 'package:get/route_manager.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 
 class APIs {
   static final storage = FlutterSecureStorage();
@@ -124,21 +127,49 @@ class APIs {
   }
 
   static Future<Result> storeCategory(
-      String name, int iconId, String type, String color, String icon) async {
+      String name, int iconId, String type, String color, File icon) async {
     var _url = _serverUrl + "/categories";
     var token = await getToken();
-    var res = await http.post(Uri.parse(_url), headers: {
-      HttpHeaders.acceptHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $token"
-    }, body: {
-      "name": name,
-      "type": type.toString(),
-      "icon_id": iconId.toString(),
-      "icon": icon.toString(),
-      "color": color.toString(),
+    String fileName = icon.path.split('/').last;
+
+    var dio = Dio();
+    dio.options.headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + token,
+    };
+    var formData = FormData.fromMap({
+      "name": '$name',
+      'type': '$type',
+      'icon_id': iconId.toString(),
+      'color': color.toString(),
+      "icon": await MultipartFile.fromFile(
+        icon.path,
+        filename: fileName,
+        // contentType: MediaType("svg"),
+      ),
     });
+
+    final response = await dio.post(
+      "$_url",
+      data: formData,
+    );
+
+    // var request = http.MultipartRequest('POST', Uri.parse(_url));
+    // request.headers['Authorization'] = 'bearer $token';
+    // request.fields['name'] = name;
+    // request.fields['type'] = type.toString();
+    // request.fields['icon_id'] = iconId.toString();
+    // request.fields['color'] = color.toString();
+    // request.files.add(await http.MultipartFile.fromPath('icon', icon.path));
+    // var response = await request.send();
+    // print(response.stream);
+    // print(response.statusCode);
+
+    // print(response);
     //  final result = json.decode(res.body);
-    if (res.statusCode == 201) {
+
+    if (response.statusCode == 201) {
       return Result(status: true, message: "Success");
     } else {
       return Result(status: false, message: "Fail");

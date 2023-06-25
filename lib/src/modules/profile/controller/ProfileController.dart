@@ -37,12 +37,14 @@ class ProfileController extends GetxController {
   }
 
   Future<bool> makeLogout() async {
-    try {
-      isLoading(true);
-      final res = await APIs.makeLogout();
-      result(res);
-    } finally {
-      isLoading(false);
-    }
+    storage.deleteAll();
+    Get.offAll(LoginScreen());
+    // try {
+    //   isLoading(true);
+    //   final res = await APIs.makeLogout();
+    //   result(res);
+    // } finally {
+    //   isLoading(false);
+    // }
   }
 }

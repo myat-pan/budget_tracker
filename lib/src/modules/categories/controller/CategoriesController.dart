@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:budget_tracker/src/modules/categories/models/categories.dart';
 import 'package:budget_tracker/src/modules/categories/models/categories_icon.dart';
 import 'package:budget_tracker/src/modules/login/models/result.dart';
@@ -34,7 +36,7 @@ class CategoriesController extends GetxController {
   }
 
   Future<bool> makeStoreCategory(
-      String name, int iconId, String type, Color color, String icon) async {
+      String name, int iconId, String type, Color color, File icon) async {
     try {
       isLoading(true);
 

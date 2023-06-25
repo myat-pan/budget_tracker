@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:budget_tracker/src/modules/statistics/views/LineChart.dart';
 import 'package:budget_tracker/src/res/dimens.dart' as dimen;
 import 'package:budget_tracker/src/res/colors.dart' as color;
+import 'package:budget_tracker/src/res/styles.dart' as style;
 import 'package:budget_tracker/src/widgets/custom_icons.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -401,31 +402,38 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[200],
-        body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Container(
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        "Choose Year",
-                        style:
-                            TextStyle(color: color.messageColor, fontSize: 14),
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      _yearPickerSection(),
-                    ],
-                  ),
-                ),
-                _graphSection(),
-                _financialProgressBar(),
-                _pieChartSection()
-              ],
-            )));
+      backgroundColor: Colors.grey[200],
+      body: Center(
+        child: Text(
+          "Coming Soon",
+          style: style.appBarStyle,
+        ),
+      ),
+      // body: SingleChildScrollView(
+      //     physics: BouncingScrollPhysics(),
+      //     child: Column(
+      //       children: [
+      //         Container(
+      //           child: Wrap(
+      //             crossAxisAlignment: WrapCrossAlignment.center,
+      //             children: [
+      //               Text(
+      //                 "Choose Year",
+      //                 style:
+      //                     TextStyle(color: color.messageColor, fontSize: 14),
+      //               ),
+      //               SizedBox(
+      //                 width: 12,
+      //               ),
+      //               _yearPickerSection(),
+      //             ],
+      //           ),
+      //         ),
+      //         _graphSection(),
+      //         _financialProgressBar(),
+      //         _pieChartSection()
+      //       ],
+      //     ))
+    );
   }
 }

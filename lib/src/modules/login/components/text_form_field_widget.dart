@@ -9,6 +9,7 @@ class TextFormFieldWidget extends StatefulWidget {
   bool obsecureText;
   final IconData suffixIcon;
   final bool showSuffix;
+  final String hintText;
 
   TextFormFieldWidget(
       {Key key,
@@ -18,6 +19,7 @@ class TextFormFieldWidget extends StatefulWidget {
       this.iconSize,
       this.suffixIcon,
       this.showSuffix,
+      this.hintText,
       this.obsecureText})
       : super(key: key);
 
@@ -44,7 +46,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
                 size: widget.iconSize.toDouble(),
                 color: Colors.black.withOpacity(0.7),
               ),
-              hintText: "eg: Dog Food, Part Time",
+              hintText: widget.hintText,
               hintStyle: TextStyle(),
               suffixIcon: widget.showSuffix
                   ? IconButton(

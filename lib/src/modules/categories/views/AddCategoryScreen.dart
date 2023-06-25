@@ -31,7 +31,7 @@ class AddCategoryScreen extends StatefulWidget {
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   final CategoriesController controller = Get.put(CategoriesController());
   String selectedValue;
-  var _file = "";
+  var _file;
 
 // create some values
   Color pickerColor = Color(0xff443a49);
@@ -107,7 +107,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                         iconImage = "";
                         iconId = 0;
                         currentColor;
-                        _file = "";
                       });
 
                       EasyLoading.showSuccess(controller.result.value.message)
@@ -198,15 +197,15 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                                     File file = File(result.files.single.path);
                                     print(file);
                                     setState(() {
-                                      _file = file.path.toString();
+                                      _file = file;
                                     });
                                   } else {
                                     // User canceled the picker
                                   }
                                 },
-                                child: Text(_file == ""
+                                child: Text(_file == null
                                     ? "Choose image from Gallery (svg only)"
-                                    : _file)),
+                                    : _file.toString())),
                           ),
                         ],
                       ),
@@ -370,8 +369,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                             child: TextFormFieldWidget(
                               controller: widget.textController,
                               //icon: CustomIcons.th_thumb_empty,
-
-                              // labelText: "Category Name",
+                              hintText: "eg: Dog Food, Part Time",
+                              //  labelText: "Please add name",
                               showSuffix: false,
                               obsecureText: false,
                               iconSize: 16,
