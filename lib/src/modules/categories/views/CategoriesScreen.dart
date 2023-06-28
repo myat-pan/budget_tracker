@@ -211,17 +211,54 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                                 0
                                             ? IconButton(
                                                 onPressed: () async {
-                                                  await controller
-                                                      .deleteCategory(controller
-                                                          .categories
-                                                          .value
-                                                          .incomeCategories[i]
-                                                          .id);
-                                                  if (controller
-                                                      .result.value.status) {
-                                                    controller
-                                                        .fetchCategories();
-                                                  }
+                                                  return showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return Expanded(
+                                                            child: AlertDialog(
+                                                          title: Text('Delete'),
+                                                          content: Text(
+                                                              'Are you sure to delete this?'),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text(
+                                                                  'CANCEL'),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                Navigator.pop(
+                                                                    context);
+                                                                await controller
+                                                                    .deleteCategory(controller
+                                                                        .categories
+                                                                        .value
+                                                                        .incomeCategories[
+                                                                            i]
+                                                                        .id);
+                                                                if (controller
+                                                                    .result
+                                                                    .value
+                                                                    .status) {
+                                                                  controller
+                                                                      .fetchCategories();
+                                                                }
+                                                              },
+                                                              child: Text(
+                                                                'DELETE',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .red),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ));
+                                                      });
                                                 },
                                                 icon: Icon(
                                                   Icons.close,

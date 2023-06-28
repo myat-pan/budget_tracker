@@ -344,8 +344,10 @@ class APIs {
     }
   }
 
-  static Future<DailyCard> getBudgetBrief() async {
-    var _url = _serverUrl + "/budgets/brief";
+  static Future<DailyCard> getBudgetBrief(
+      int currentYear, int currentMonth) async {
+    var _url =
+        _serverUrl + "/budgets/brief?year=$currentYear&month=$currentMonth";
     var token = await getToken();
     var res = await http.get(Uri.parse(_url), headers: {
       HttpHeaders.acceptHeader: "application/json",

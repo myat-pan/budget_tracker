@@ -21,7 +21,7 @@ class DashboardController extends GetxController {
   Future<bool> fetchDashboard(int month, int year) async {
     try {
       isLoading(true);
-      final result = await APIs.getBudgetBrief();
+      final result = await APIs.getBudgetBrief(year, month);
       briefData(result);
       final res = await APIs.getBudget(month, year);
 

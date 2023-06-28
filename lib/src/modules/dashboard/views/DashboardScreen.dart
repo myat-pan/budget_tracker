@@ -147,19 +147,53 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           constraints: BoxConstraints(),
                           padding: EdgeInsets.zero,
                           onPressed: () async {
-                            EasyLoading.show(status: "deleting...")
-                                .then((value) async {
-                              await controller.deleteBudget(data[i].id);
-                              if (controller.result.value.status == true) {
-                                EasyLoading.dismiss();
-                                controller.fetchDashboard(
-                                    currentMonth, currentYear);
-                              } else {
-                                EasyLoading.showError(
-                                    controller.result.value.message,
-                                    dismissOnTap: true);
-                              }
-                            });
+                            return showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Expanded(
+                                  child: AlertDialog(
+                                    title: Text('Delete'),
+                                    content:
+                                        Text('Are you sure to delete this?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text('CANCEL'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          EasyLoading.show(
+                                                  status: "deleting...")
+                                              .then((value) async {
+                                            await controller
+                                                .deleteBudget(data[i].id);
+                                            if (controller
+                                                    .result.value.status ==
+                                                true) {
+                                              EasyLoading.dismiss();
+                                              controller.fetchDashboard(
+                                                  currentMonth, currentYear);
+                                            } else {
+                                              EasyLoading.showError(
+                                                  controller
+                                                      .result.value.message,
+                                                  dismissOnTap: true);
+                                            }
+                                          });
+                                        },
+                                        child: Text(
+                                          'DELETE',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
                           },
                           visualDensity: VisualDensity(horizontal: -4),
                           icon: Icon(
